@@ -360,11 +360,11 @@ public class GameManager implements Runnable {
 			//int colls = 0;
 			for (int x = 0; x < returnObjects.size(); x++) {
 				// Run collision detection algorithm between objects
-				//if(!areCollidersColliding(collidersInGame.get(i), returnObjects.get(x))){
-					//System.out.println("!colliding");
-				if(returnObjects.get(x) != collidersInGame.get(i)){
-				detectCollision(collidersInGame.get(i), returnObjects.get(x));
+				for (int y = 0; y < returnObjects.size(); y++) {
+				if(returnObjects.get(x) != returnObjects.get(y)){
+				detectCollision(returnObjects.get(y), returnObjects.get(x));
 				//System.out.println("colls"+(++colls));
+				}
 				}
 				//}
 			}

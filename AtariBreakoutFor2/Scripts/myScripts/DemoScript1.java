@@ -48,7 +48,7 @@ public class DemoScript1 implements GameBehavior{
 								
 							}		
 					}
-				});
+				},"onCollision");
 				
 			}
 			@Override
@@ -62,7 +62,6 @@ public class DemoScript1 implements GameBehavior{
 				// TODO Auto-generated method stub
 				GameObject otherObject = ((GameObject)other.getParent());
 				otherObject.destroy(otherObject);
-				
 			}
 			
 			@Override

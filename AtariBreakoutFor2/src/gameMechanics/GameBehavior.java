@@ -98,7 +98,6 @@ public interface GameBehavior {
 				synchronized (GameManager.game.gameObjects) {
 					id = Math.max(id,GameManager.game.gameObjects.get(i).collider.getColliderID());	
 				}
-				
 			}
 			id++;
 			// collider is added  to GameManager within collider constructor

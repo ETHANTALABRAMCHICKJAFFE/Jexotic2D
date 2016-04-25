@@ -108,6 +108,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 			}
 		});
 		f.setSize(1600, 900);
+		this.setBackground(Color.white);
 		f.add(this);
 		//f.addKeyListener(this);
 		Thread t = new Thread(this,"Game Thread");
@@ -261,11 +262,14 @@ public class Game extends JPanel implements Runnable,KeyListener{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.red);
-//		for (GameObject gameObject : gameObjects) {
+		synchronized (gameObjects) {
+			
+		
 		for(int i = 0;i<gameObjects.size();i++){
 			GameObject gameObject = gameObjects.get(i);
 			gameObject.paintGameObject(g);
 			gameObject.getCollider().drawCollider(g);
+		}
 		}
 	}
 	
@@ -281,6 +285,9 @@ public class Game extends JPanel implements Runnable,KeyListener{
 //			GameManager.detectCollisions();
 			if (gameObjects != null) {
 				if (gameObjects.size() > 0) {
+					synchronized (gameObjects) {
+						
+					
 					for(int i = 0;i<gameObjects.size();i++){
 						GameObject gameObject = gameObjects.get(i);
 //					for (GameObject gameObject : gameObjects) {
@@ -290,6 +297,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 					}
 //					repaint();
 //					numOfFramesRenderedSinceStart++;
+					}
 				}
 			}
 			
