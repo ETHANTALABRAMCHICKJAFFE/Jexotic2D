@@ -273,11 +273,12 @@ public class Game extends JPanel implements Runnable,KeyListener{
 	public void addGameObject(GameObject g){
 		gameObjects.add(g);
 	}
+	
 	@Override
 	public void run() {
 		GameManager.fpsCounter.start();
 		while (!endThread) {
-			GameManager.detectCollisions();
+//			GameManager.detectCollisions();
 			if (gameObjects != null) {
 				if (gameObjects.size() > 0) {
 					for(int i = 0;i<gameObjects.size();i++){
@@ -285,12 +286,13 @@ public class Game extends JPanel implements Runnable,KeyListener{
 //					for (GameObject gameObject : gameObjects) {
 						gameObject.update(gameObject);
 						repaint();
-						
 						numOfFramesRenderedSinceStart++;
 					}
-					
+//					repaint();
+//					numOfFramesRenderedSinceStart++;
 				}
 			}
+			
 			GameManager.fpsCounter.interrupt();
 			try {
 				Thread.sleep(15);
@@ -298,14 +300,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-//			try {
-//				Thread.sleep(15);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		
+			GameManager.detectCollisions();
 		}
 	}
 

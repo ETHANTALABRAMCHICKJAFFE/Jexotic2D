@@ -40,6 +40,7 @@ public class DemoScript1 implements GameBehavior{
 						// TODO Auto-generated method stub
 						while(true){		
 							GameObject copyGameObject = GameBehavior.createCopyGameObject(g);
+							
 							copyGameObject.getCollider().moveToPosition(Vector2d.sub(g.getPosition(),new Vector2d(g.getCollider().getColliderShape().getShapeWidth(),0)));
 							try{
 							Thread.sleep(500);
@@ -61,6 +62,7 @@ public class DemoScript1 implements GameBehavior{
 				// TODO Auto-generated method stub
 				GameObject otherObject = ((GameObject)other.getParent());
 				otherObject.destroy(otherObject);
+				
 			}
 			
 			@Override

@@ -38,6 +38,10 @@ import math.Vector2d;
 
 public class GameObject extends PhysicsObject implements GameBehavior,Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Color color;
 	private boolean isDestroyed = false;
 	private boolean destroyOnCollision = false;
@@ -279,14 +283,16 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	public boolean getIsDestroyed(){
 		return isDestroyed;
 	}
-
+int i = 0,j = 0;
 	@Override
 	public void onCollision(Collider other,GameObject g) {
-		// TODO Auto-generated method stub
 		if(destroyOnCollision){
 			destroy(g);
 		}
+		System.out.println("i"+(++i));
+		System.out.println("numOfScripts"+scripts.size());
 		for (GameBehavior gameBehavior : scripts) {
+			System.out.println("j"+(++j));
 			gameBehavior.onCollision(other,g);
 		}
 	}

@@ -28,7 +28,7 @@ public class Collider {
 		this.collider = shape;
 		drawCollider = true;
 		this.setColliderID(colliderID);
-
+		
 	}
 
 	

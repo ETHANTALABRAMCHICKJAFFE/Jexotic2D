@@ -66,23 +66,29 @@ public interface GameBehavior {
 		GameManager.game.gameObjects.add(newG);
 		return newG;
 	}
-	public static GameObject createGameObject(String shape,Vector2d position,Vector2d velocity,double width,double height,double mass,Color color,boolean isMovable){
+	public static GameObject createGameObject(String shape,Vector2d position,Vector2d velocity,double width,double height,double mass,Color color,boolean isMovable,boolean isTrigger,boolean isDestroyed){
 		
 		if(shape.equals("Circle")){
 		int id = GameManager.game.gameObjects.get(0).collider.getColliderID();
 		for (int i = 0; i <GameManager.game.gameObjects.size(); i++) {
-			id = Math.max(id,GameManager.game.gameObjects.get(i).collider.getColliderID());
+			synchronized (GameManager.game.gameObjects) {
+				id = Math.max(id,GameManager.game.gameObjects.get(i).collider.getColliderID());
+			}
 		}
 		id++;
 		Collider c = new Collider(new Circle(width,360,position),id);
 		c.setDrawCollider(true);
 		GameObject Circle = new GameObject(position, new Vector2d(velocity), mass, color, c);
 		Circle.setName("GameObject"+id);
-		GameManager.addCollider(c);
+		//GameManager.addCollider(c);
 		Circle.setMovable(isMovable);
+		Circle.setTrigger(isTrigger);
+		Circle.setIsDestroyed(isDestroyed);
 		Circle.getCollider().setDrawCollider(false);
 //		Circle.addScriptFile("DemoScript1.java");
-		GameManager.game.gameObjects.add(Circle);
+		
+		// adds at the same time collider to collidersInGame
+	GameManager.game.gameObjects.add(new GameObject(Circle));
 		//GameManager.game.gameObjects.listIterator().add(Circle);
 		return Circle;
 		}
@@ -95,16 +101,21 @@ public interface GameBehavior {
 				
 			}
 			id++;
+			// collider is added  to GameManager within collider constructor
 			Collider c = new Collider(new Rectangle(position,height,width,0),id);
 			Vector2d vel = new Vector2d(velocity);
 			GameObject rectangle = new GameObject(position, vel , mass, color, c);
 			rectangle.setName("GameObject"+id);
 			rectangle.setMovable(isMovable);
 			rectangle.getCollider().setDrawCollider(false);
+			rectangle.setTrigger(isTrigger);
+			rectangle.setIsDestroyed(isDestroyed);
 			// TODO: remove the script attachment below.
 			//rectangle.addScriptFile("DemoScript1.java");
-			GameManager.game.gameObjects.add(rectangle);
+			//GameManager.game.gameObjects.add(rectangle);
+			//GameManager.addCollider(c);
 			//GameManager.game.gameObjects.listIterator().add(rectangle);
+			GameManager.game.gameObjects.add(new GameObject(rectangle));
 			return rectangle;
 		}
 		else{
