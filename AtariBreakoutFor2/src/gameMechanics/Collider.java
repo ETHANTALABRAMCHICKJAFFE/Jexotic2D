@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -14,8 +15,12 @@ import gamePieces.GameObject;
 import math.NewMath;
 import math.Vector2d;
 
-public class Collider {
+public class Collider implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1033867527157164902L;
 	private Shape collider; // the shape of the collider. Using the points we
 							// can detect collision.
 	private boolean drawCollider; // i.e. should this collider be visible?

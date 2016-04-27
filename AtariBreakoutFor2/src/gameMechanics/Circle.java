@@ -6,6 +6,10 @@ import math.Vector2d;
 
 public class Circle extends Shape{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4127915996887474478L;
 	private double radius; // the radius of the circle
 	private int numOfPoints; // the number of points the circumference has, the more there is the rounder the circle
 	

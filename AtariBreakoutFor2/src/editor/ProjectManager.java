@@ -3,6 +3,8 @@ package editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -87,6 +90,10 @@ public class ProjectManager {
 		// buttonsList.setDragEnabled(true);
 		// buttonsList.setDropMode(DropMode.INSERT);
 		f = new JFrame("Select Project");
+		//]f.setIconImage(new ImageIcon(getClass().getResource("Jexotic2D/Images/JexoticIcon1.png")).getImage());
+		Image icon = Toolkit.getDefaultToolkit().getImage("Images/JexoticIcon1.png");
+	    f.setIconImage(icon);
+		//f.setIconImage((new ImageIcon("Jexotic2D/Images/JexoticIcon1.png")).getImage());
 		f.setBounds(250, 100, 1200, 800);
 		JPanel p = new JPanel();
 
@@ -134,7 +141,7 @@ public class ProjectManager {
 
 		ObjectOutputStream out;
 		try {
-			out = new ObjectOutputStream(new FileOutputStream("game_objects.ser"));
+			out = new ObjectOutputStream(new FileOutputStream(projectDirectory+"\\game_objects.ser"));
 			out.writeObject(m.gameObjects);
 			out.flush();
 			out.close();
@@ -156,7 +163,10 @@ public class ProjectManager {
 			if (Files.exists(path)) {
 
 				ObjectInputStream in = new ObjectInputStream(new FileInputStream(dir + "\\game_objects.ser"));
-				g = (ArrayList<GameObject>) in.readObject();
+				//if(in.readObject() instanceof ArrayList)
+				Object b = in.readObject();
+				if(b instanceof ArrayList)
+					g = (ArrayList<GameObject>)b; 
 				in.close();
 			}
 		} catch (IOException e) {
@@ -169,8 +179,14 @@ public class ProjectManager {
 		projectDirectory = dir;
 		MainEditor editor = new MainEditor();
 		editor.createGUI();
-		if(g != null )
+		if(g != null ){
+		for (GameObject gameObject : g) {
+			editor.outliner.addGameObject(gameObject);
+			editor.outliner.createButtons();
+			editor.outliner.updateSelected(gameObject);
+		}
 			editor.gameObjects = g;
+		}
 	}
 
 	public static void createProjectsFolder() {

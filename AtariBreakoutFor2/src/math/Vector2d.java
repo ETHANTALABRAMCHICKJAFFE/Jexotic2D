@@ -1,10 +1,16 @@
 package math;
 
+import java.io.Serializable;
+
 import gameMechanics.Circle;
 import gameMechanics.Collider;
 import gameMechanics.Rectangle;
 
-public class Vector2d{
+public class Vector2d implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2665828588100820303L;
 	private double x,y;
 	//public static final Vector2d ZERO = new Vector2d(0,0);
 	public Vector2d(double x,double y){

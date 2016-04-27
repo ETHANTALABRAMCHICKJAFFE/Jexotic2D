@@ -1,8 +1,14 @@
 package gameMechanics;
 
+import java.io.Serializable;
+
 import math.Vector2d;
 
-public class PhysicsObject{
+public class PhysicsObject implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2861912151929801583L;
 	protected Vector2d position,velocity;
 	protected Collider collider;
 	protected double mass;

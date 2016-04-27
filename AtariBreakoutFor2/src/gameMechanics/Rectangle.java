@@ -8,6 +8,10 @@ import math.Vector2d;
 
 public class Rectangle extends Shape {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8033392852267232882L;
 	private double lengthOfSideA, lengthOfSideB; // the sizes of each side of
 													// the rectangles
 	private int numOfPoints;

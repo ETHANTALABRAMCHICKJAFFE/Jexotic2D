@@ -1,10 +1,15 @@
 package gameMechanics;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import math.*;
-public class Shape{
+public class Shape implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5247811614567004936L;
 	protected ArrayList<Vector2d> points;
 	protected Vector2d referencePoint;
 	protected double rotationAngle = 0;

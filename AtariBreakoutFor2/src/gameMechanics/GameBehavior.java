@@ -2,12 +2,13 @@ package gameMechanics;
 
 import java.awt.Color;
 import java.awt.Event;
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 
 import gamePieces.GameObject;
 import math.Vector2d;
 
-public interface GameBehavior {
+public interface GameBehavior extends Serializable {
 	/**
 	 * Use this function to create functionality for when collision occurs
 	 * @param other
@@ -88,7 +89,9 @@ public interface GameBehavior {
 //		Circle.addScriptFile("DemoScript1.java");
 		
 		// adds at the same time collider to collidersInGame
-	GameManager.game.gameObjects.add(new GameObject(Circle));
+		synchronized (GameManager.game.gameObjects) {
+			GameManager.game.gameObjects.add(new GameObject(Circle));		
+		}
 		//GameManager.game.gameObjects.listIterator().add(Circle);
 		return Circle;
 		}
@@ -114,7 +117,9 @@ public interface GameBehavior {
 			//GameManager.game.gameObjects.add(rectangle);
 			//GameManager.addCollider(c);
 			//GameManager.game.gameObjects.listIterator().add(rectangle);
-			GameManager.game.gameObjects.add(new GameObject(rectangle));
+			synchronized (GameManager.game.gameObjects) {
+				GameManager.game.gameObjects.add(new GameObject(rectangle));		
+			}
 			return rectangle;
 		}
 		else{

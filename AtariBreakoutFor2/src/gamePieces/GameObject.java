@@ -24,6 +24,8 @@ import javax.swing.RepaintManager;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
+import editor.JavaClassLoader;
+import editor.ProjectManager;
 import gameMechanics.Circle;
 import gameMechanics.Collider;
 import gameMechanics.GameBehavior;
@@ -47,13 +49,15 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	private boolean destroyOnCollision = false;
 	private boolean isTrigger = false;
 	private String tag = "Default",name = "gameObject";
-	private ArrayList<GameBehavior> scripts;
+	transient private ArrayList<GameBehavior> scripts;
+	private ArrayList<String> scriptsPaths;
 	public GameObject(Vector2d position, Vector2d velocity, double mass, Color c,Collider collider) {
 		super(position, velocity, mass);
 		color = c;
 		setCollider(collider);
 		//GameManager.addCollider(collider);
 		scripts = new ArrayList<GameBehavior>();
+		scriptsPaths = new ArrayList<String>();
 		awake(this);
 	}
 	
@@ -71,14 +75,113 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		name = g.name;
 		tag = g.tag;
 		scripts = new ArrayList<GameBehavior>();
-		scripts.addAll(g.scripts);
+		scriptsPaths = new ArrayList<String>();
+		if(g.scripts != null && !g.scripts.isEmpty())
+			scripts.addAll(g.scripts);
+		if(g.scriptsPaths != null && !g.scriptsPaths.isEmpty())
+			scriptsPaths.addAll(g.scriptsPaths);
+		if(!scriptsPaths.isEmpty()){
+			
+			synchronized (scriptsPaths) {
+				for (String path : scriptsPaths) {
+					addScriptFromFile(path);	
+				}
+			}
+			
+			
+		}
 	}
 
-	public void addScript(GameBehavior script){
+	public void addScript(GameBehavior script,String scriptPath){
 		scripts.add(script);
+		scriptsPaths.add(scriptPath);
 	}
 	
-	public void addScriptFile(String filename){
+	public void addScriptFromFile(String scriptName){
+		try{
+			// Save source in .java file.
+			File root = new File(ProjectManager.projectDirectory); // On Windows running on C:\, this is C:\java.
+			File sourceFile = new File(root,"\\Scripts\\"+scriptName+".java");
+			System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_60");
+			
+			// Compile source file.
+			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			//sourceFile = new File(scriptName);
+			System.out.println(sourceFile.getPath());
+			compiler.run(System.in, System.out, System.err, sourceFile.getPath());
+
+			URL[] classes = {root.toURI().toURL()};
+		    URLClassLoader child = new URLClassLoader (classes, this.getClass().getClassLoader());
+			Class<?> cls = Class.forName("Scripts."+scriptName, false, child); // Should print "hello".
+			Object instance = cls.newInstance(); // Should print "world".
+			System.out.println(instance); // Should print "test.Test@hashcode".
+			scripts.add((GameBehavior)instance);
+			}catch(IOException e){
+				System.out.println(e);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e);
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			}
+		
+	}
+	/**
+	 * this is the correct one
+	 * @param scriptname
+	 */
+	public void addScriptFile(String scriptname){
+		try{
+			//source = fileSource;
+			// Save source in .java file.
+			File root = new File(ProjectManager.projectDirectory); // On Windows running on C:\, this is C:\java.
+			File sourceFile = new File(root, "\\Scripts\\"+scriptname+".java");
+//			File sourceFile = new File(root, "C:\\Users\\Ethan\\workspace\\AtariBreakoutFor2\\Scripts\\"+filename);
+			sourceFile.getParentFile().mkdirs();
+			//CharSequence c = source;
+//			//Files.write(path, bytes, options)
+//			Files.write(sourceFile.toPath(),source.getBytes(),(OpenOption)StandardOpenOption.WRITE);
+			
+			System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_60");
+			
+			// Compile source file.
+			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			//sourceFile = new File("C:\\java\\test\\DemoScript1.java");
+//			sourceFile = new File("C:\\Users\\Ethan\\workspace\\AtariBreakoutFor2\\Scripts\\myScripts\\"+filename);
+			System.out.println(sourceFile.getPath());
+			compiler.run(System.in, System.out, System.err, sourceFile.getPath());
+
+			URL[] classes = {root.toURI().toURL()};
+		    URLClassLoader child = new URLClassLoader (classes, this.getClass().getClassLoader());
+			// Load and instantiate compiled class.
+			Class<?> cls = Class.forName("Scripts."+scriptname, false, child);
+			Object instance = cls.newInstance(); // Should print "world".
+			System.out.println(instance); // Should print "test.Test@hashcode".
+			addScript((GameBehavior)instance,scriptname);
+			}catch(IOException e){
+				System.out.println(e);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e);
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(e);
+			}
+	}
+	public void addScriptFile(){
 		try{
 //		 Prepare source somehow.
 		String source = "package test; public class Test { static { System.out.println(\"hello\"); } public Test() { System.out.println(\"world\"); } }";
@@ -101,12 +204,16 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		System.out.println(sourceFile.getPath());
 		compiler.run(System.in, System.out, System.err, sourceFile.getPath());
 
+		URL[] classes = {root.toURI().toURL()};
+	    URLClassLoader child = new URLClassLoader (classes, this.getClass().getClassLoader());
 		// Load and instantiate compiled class.
-		URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { root.toURI().toURL() });
-		Class<?> cls = Class.forName("test.DemoScript1", false, classLoader); // Should print "hello".
+		//URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { root.toURI().toURL() });
+		//URLClassLoader classLoader2 = (URLClassLoader) URLClassLoader.getSystemClassLoader();
+		//Class<?> cls = Class.forName("test.DemoScript1", false, classLoader); // Should print "hello".
+		Class<?> cls = Class.forName("test.DemoScript1", false, child); // Should print "hello".
 		Object instance = cls.newInstance(); // Should print "world".
 		System.out.println(instance); // Should print "test.Test@hashcode".
-		addScript((GameBehavior)instance);
+		addScript((GameBehavior)instance,"DemoScript1.java");
 		}catch(IOException e){
 			System.out.println(e);
 		} catch (ClassNotFoundException e) {
