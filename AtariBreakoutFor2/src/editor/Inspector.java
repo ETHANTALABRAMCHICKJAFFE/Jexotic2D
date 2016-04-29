@@ -12,6 +12,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -406,9 +407,16 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 			}else if(gameObject.getCollider().getColliderShape() instanceof Rectangle){
 				gameObject.getCollider().getColliderShape().setShapeWidth(width);
 				Rectangle r = ((Rectangle)gameObject.getCollider().getColliderShape());
+				//ArrayList<Vector2d> points = new ArrayList<Vector2d>(r.getPoints());
 				r.setLengthOfSideB(width);
 				r.setPoints(Rectangle.calculateRectanglePoints(r.getLengthOfSideA(), width, r.getReferencePoint(), r.getNumOfPoints()));
-				Rectangle.calculateSides(r);
+				r.rotate(r.getRotationAngle());
+				r.topLeftPoint = r.getPoints().get(0);
+				r.topRightPoint = r.getPoints().get(1);
+				r.bottomRightPoint = r.getPoints().get(2);
+				r.bottomLeftPoint = r.getPoints().get(3);
+				//r.calculateCornersAndSides();
+				//Rectangle.calculateSides(r);
 				gamePanel.repaint();
 				}
 		}
@@ -426,7 +434,13 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 			Rectangle r = ((Rectangle)gameObject.getCollider().getColliderShape());
 			r.setLengthOfSideA(height);
 			r.setPoints(Rectangle.calculateRectanglePoints(height, r.getLengthOfSideB(), r.getReferencePoint(), r.getNumOfPoints()));
-			Rectangle.calculateSides(r);
+			r.rotate(r.getRotationAngle());
+			r.topLeftPoint = r.getPoints().get(0);
+			r.topRightPoint = r.getPoints().get(1);
+			r.bottomRightPoint = r.getPoints().get(2);
+			r.bottomLeftPoint = r.getPoints().get(3);
+			//r.calculateCornersAndSides();
+			//Rectangle.calculateSides(r);
 			gamePanel.repaint();
 			}
 		}

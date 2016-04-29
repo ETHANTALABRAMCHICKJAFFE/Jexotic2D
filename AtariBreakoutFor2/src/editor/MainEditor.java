@@ -316,7 +316,10 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		Vector2d position = new Vector2d(Math.random() * 500 + 200, Math.random() * 500 + 50);
 		// double radius = 20;
 		double height = 50, width = 50;
-		Collider c = new Collider(new Rectangle(position, height, width, 0), numOfGameObjects);
+		Rectangle r = new Rectangle(position, height, width, 0);
+		r.rotate(45);
+		//r.setRotationAngle(45);
+		Collider c = new Collider(r, numOfGameObjects);
 		c.setDrawCollider(true);
 		Vector2d vel = new Vector2d(-3 * Math.random() + 5, Math.random() * 10);
 		vel = Vector2d.zero();

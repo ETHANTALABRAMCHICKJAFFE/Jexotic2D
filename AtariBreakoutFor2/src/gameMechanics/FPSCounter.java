@@ -29,8 +29,8 @@ public class FPSCounter extends Thread{
             minFPS = Math.min(fps, minFPS);
             lastTime = System.nanoTime();
             System.out.println("FPS: "+fps);
-           // System.out.println("avgFPS: "+avgFPS);
-         //   System.out.println("MinFPS: "+minFPS);
+            //System.out.println("avgFPS: "+avgFPS);
+            //System.out.println("MinFPS: "+minFPS);
         }
     }
     public double fps(){

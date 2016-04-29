@@ -44,7 +44,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 			GameObject currentObject = gameObjectList.get(i);
 			//GameObject newG = new GameObject(currentObject.getPosition(),currentObject.getVelocity(),currentObject.getMass(),currentObject.getColor(),new Collider(currentObject.getCollider()));
 			GameObject newG = new GameObject(currentObject);
-			newG.getCollider().setDrawCollider(false);
+			newG.getCollider().setDrawCollider(true);
 			//System.out.println("newG"+newG);
 //			GameManager.addCollider(newG.getCollider());
 			newG.start(newG);

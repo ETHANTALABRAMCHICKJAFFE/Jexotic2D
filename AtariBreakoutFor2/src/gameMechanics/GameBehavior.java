@@ -81,12 +81,10 @@ public interface GameBehavior extends Serializable {
 		c.setDrawCollider(true);
 		GameObject Circle = new GameObject(position, new Vector2d(velocity), mass, color, c);
 		Circle.setName("GameObject"+id);
-		//GameManager.addCollider(c);
 		Circle.setMovable(isMovable);
 		Circle.setTrigger(isTrigger);
 		Circle.setIsDestroyed(isDestroyed);
 		Circle.getCollider().setDrawCollider(false);
-//		Circle.addScriptFile("DemoScript1.java");
 		
 		// adds at the same time collider to collidersInGame
 		synchronized (GameManager.game.gameObjects) {
@@ -112,11 +110,6 @@ public interface GameBehavior extends Serializable {
 			rectangle.getCollider().setDrawCollider(false);
 			rectangle.setTrigger(isTrigger);
 			rectangle.setIsDestroyed(isDestroyed);
-			// TODO: remove the script attachment below.
-			//rectangle.addScriptFile("DemoScript1.java");
-			//GameManager.game.gameObjects.add(rectangle);
-			//GameManager.addCollider(c);
-			//GameManager.game.gameObjects.listIterator().add(rectangle);
 			synchronized (GameManager.game.gameObjects) {
 				GameManager.game.gameObjects.add(new GameObject(rectangle));		
 			}

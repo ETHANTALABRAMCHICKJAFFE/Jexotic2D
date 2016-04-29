@@ -1,18 +1,12 @@
 package gameMechanics;
 
-import java.awt.Component;
+
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import math.Vector2d;
 
 public class Input {
 	private static ArrayList<Integer> currentKeyPressed, currentKeyReleased, currentKeyTyped;
@@ -23,14 +17,11 @@ public class Input {
 		for (Field f : fields) {
 		    if (Modifier.isStatic(f.getModifiers())) {
 		    	if(f.getType() == int.class){
-		        //System.out.println(f.getName());
 		        try {
 					currentKeyReleased.add(f.getInt(f));
 				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		    	}
@@ -45,16 +36,11 @@ public class Input {
 					switch (ke.getID()) {
 					case KeyEvent.KEY_PRESSED:
 						if(!currentKeyPressed.contains(ke.getKeyCode())){
-//							System.out.println("ke.getKeyCode() = "+ ke.getKeyCode());
 							currentKeyPressed.add(ke.getKeyCode());
 							if(currentKeyReleased.contains(ke.getKeyCode())){
-//								System.out.println("contain");
 								currentKeyReleased.remove(new Integer(ke.getKeyCode()));
 							}
 						}
-						//						if (currentKeyReleased.contains(ke.getKeyCode())){
-						//							currentKeyReleased.remove(ke.getKeyCode());
-						//						}
 						break;
 
 					case KeyEvent.KEY_RELEASED:
@@ -64,9 +50,6 @@ public class Input {
 								currentKeyPressed.remove(new Integer(ke.getKeyCode()));
 							}
 						}
-						//						if (currentKeyPressed.contains(ke.getKeyCode())){
-						//							currentKeyPressed.remove(ke.getKeyCode());
-						//						}
 						break;
 						//TODO: add case KeyEvent.KEY_TYPED.
 					}
@@ -76,7 +59,6 @@ public class Input {
 		});
 	}
 
-	private static boolean wPressed = false;
 
 	public static boolean isKeyPressed(int keyCode) {
 		synchronized (Input.class) {
@@ -89,6 +71,7 @@ public class Input {
 			return false;
 		}
 	}
+	
 	public static boolean isKeyReleased(int keyCode) {
 		synchronized (Input.class) {
 			for (Integer i : currentKeyReleased) {

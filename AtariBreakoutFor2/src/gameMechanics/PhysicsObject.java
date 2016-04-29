@@ -13,6 +13,7 @@ public class PhysicsObject implements Serializable{
 	protected Collider collider;
 	protected double mass;
 	protected boolean isMovable = true;
+	
 	public PhysicsObject(Vector2d position,Vector2d velocity,double mass){
 		this.position = new Vector2d(position.getX(), position.getY());
 		this.velocity = new Vector2d(velocity.getX(), velocity.getY());
@@ -44,11 +45,7 @@ public class PhysicsObject implements Serializable{
 	 * @param velocity the velocity to set
 	 */
 	public void setVelocity(Vector2d velocity) {
-		//if(isMovable)
 		this.velocity = velocity;
-		//else
-			//System.out.println("");
-//			System.out.println("notMovable");
 	}
 	
 	public void updateVelocity(PhysicsObject other){
@@ -106,31 +103,19 @@ public class PhysicsObject implements Serializable{
 		System.err.println("ux1"+ux1);
 		uy2 = (2*m1*vy1+(m1+m2)*vy2)/(m1+m2);
 		uy1 = uy2-vy1-vy2;
-		
-//		ux1 = (2*m2*vx2+(m1-m2)*vx1)/(m1+m2);
-//		System.err.println("ux1 "+ux1);
-//		ux2 = vx1-vx2+ux1;
-//		System.err.println("ux2"+ux2);
-//		uy1 = (2*m2*vy2+(m1-m2)*vy1)/(m1+m2);
-//		uy2 = vy1-vy2+uy1;
-		
 		Vector2d[] vels = {new Vector2d(ux1,uy1), new Vector2d(ux2,uy2)};
 		return vels;
 	}
+	
 	public void findSecondVelocityOfCollisionWithAnotherSurface(Vector2d hitVelocity, Vector2d normalOfSurface){
 		if(!isMovable)
 			return;
-		//double angleBetweenBothVectors = Math.cos();
-	//Vector2d v2 = Vector2d.div((Math.cos(angleBetweenBothVectors)*normalOfSurface.getLength()),Vector2d.mul(angleBetweenBothVectors*hitVelocity.getLength(),normalOfSurface));
 		double angle = Vector2d.angleBetweenTwoVector2ds(hitVelocity, normalOfSurface);
 		if(angle >= Math.PI){
 			angle = angle - Math.PI; 
 		}
 		System.out.println("angle="+angle);
-		Vector2d reversedDirectionVelocity = Vector2d.mul(-1, velocity);
 		Vector2d v2 = Vector2d.rotate(velocity, angle);
-		//velocity = Vector2d.getNormalizeOfVector(velocity);
-		//velocity = v2;
 		velocity = v2;
 	System.out.println("New Velocity= "+velocity.toString());
 	}

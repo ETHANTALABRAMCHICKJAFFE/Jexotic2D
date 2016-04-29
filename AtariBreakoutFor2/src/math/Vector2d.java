@@ -122,6 +122,8 @@ public class Vector2d implements Serializable{
 				return new Vector2d(temp_x1 + center.x, temp_y1 + center.y);
 	}
 	public static Vector2d rotatePointAroundAnotherPoint(Vector2d p1,Vector2d center,double angle){
+		//angle = -angle;
+		
 		//TRANSLATE TO ORIGIN
 		double x1 = p1.getX() - center.x;
 		double y1 = p1.getY() - center.y;
@@ -132,6 +134,13 @@ public class Vector2d implements Serializable{
 
 		//TRANSLATE BACK
 		return new Vector2d(temp_x1 + center.x, temp_y1 + center.y);
+		//return new Vector2d(temp_x1, temp_y1);
+		
+		/*
+		double newX = center.x + (p1.x-center.x)*Math.cos(angle) - (p1.y-center.y)*Math.sin(angle);
+
+		double newY = center.y + (p1.x-center.x)*Math.sin(angle) + (p1.y-center.y)*Math.cos(angle);
+		return new Vector2d(newX,newY);*/
 	}
 	/**
 	 * 

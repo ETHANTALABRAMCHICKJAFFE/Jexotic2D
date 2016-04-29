@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,6 @@ import javax.swing.RepaintManager;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import editor.JavaClassLoader;
 import editor.ProjectManager;
 import gameMechanics.Circle;
 import gameMechanics.Collider;
@@ -55,7 +55,6 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		super(position, velocity, mass);
 		color = c;
 		setCollider(collider);
-		//GameManager.addCollider(collider);
 		scripts = new ArrayList<GameBehavior>();
 		scriptsPaths = new ArrayList<String>();
 		awake(this);
@@ -64,16 +63,14 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	public GameObject(GameObject g){
 		super(g.position,g.velocity,g.mass);
 		color = g.color;
-		Collider newCollider = new Collider(g.collider);
-		//newCollider.setParent(this);
-		setCollider(newCollider);
-		//GameManager.collidersInGame.clear();
-		GameManager.addCollider(newCollider);
 		isMovable = g.isMovable;
 		isDestroyed = g.isDestroyed;
-		setTrigger(g.isTrigger());
 		name = g.name;
 		tag = g.tag;
+		Collider newCollider = new Collider(g.collider);
+		setCollider(newCollider);
+		GameManager.addCollider(newCollider);
+		setTrigger(g.isTrigger());
 		scripts = new ArrayList<GameBehavior>();
 		scriptsPaths = new ArrayList<String>();
 		if(g.scripts != null && !g.scripts.isEmpty())
@@ -90,6 +87,7 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 			
 			
 		}
+		awake(this);
 	}
 
 	public void addScript(GameBehavior script,String scriptPath){
@@ -106,130 +104,69 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 			
 			// Compile source file.
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			//sourceFile = new File(scriptName);
 			System.out.println(sourceFile.getPath());
 			compiler.run(System.in, System.out, System.err, sourceFile.getPath());
 
 			URL[] classes = {root.toURI().toURL()};
 		    URLClassLoader child = new URLClassLoader (classes, this.getClass().getClassLoader());
-			Class<?> cls = Class.forName("Scripts."+scriptName, false, child); // Should print "hello".
-			Object instance = cls.newInstance(); // Should print "world".
-			System.out.println(instance); // Should print "test.Test@hashcode".
+			Class<?> cls = Class.forName("Scripts."+scriptName, false, child); 
+			Object instance = cls.newInstance(); 
+			System.out.println(instance);
 			scripts.add((GameBehavior)instance);
 			}catch(IOException e){
 				System.out.println(e);
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				System.out.println(e);
 				e.printStackTrace();
 			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println(e);
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println(e);
 			}
 		
 	}
+
 	/**
 	 * this is the correct one
 	 * @param scriptname
 	 */
 	public void addScriptFile(String scriptname){
 		try{
-			//source = fileSource;
 			// Save source in .java file.
-			File root = new File(ProjectManager.projectDirectory); // On Windows running on C:\, this is C:\java.
+			File root = new File(ProjectManager.projectDirectory);
 			File sourceFile = new File(root, "\\Scripts\\"+scriptname+".java");
-//			File sourceFile = new File(root, "C:\\Users\\Ethan\\workspace\\AtariBreakoutFor2\\Scripts\\"+filename);
 			sourceFile.getParentFile().mkdirs();
-			//CharSequence c = source;
-//			//Files.write(path, bytes, options)
-//			Files.write(sourceFile.toPath(),source.getBytes(),(OpenOption)StandardOpenOption.WRITE);
 			
 			System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_60");
 			
 			// Compile source file.
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			//sourceFile = new File("C:\\java\\test\\DemoScript1.java");
-//			sourceFile = new File("C:\\Users\\Ethan\\workspace\\AtariBreakoutFor2\\Scripts\\myScripts\\"+filename);
 			System.out.println(sourceFile.getPath());
 			compiler.run(System.in, System.out, System.err, sourceFile.getPath());
 
 			URL[] classes = {root.toURI().toURL()};
 		    URLClassLoader child = new URLClassLoader (classes, this.getClass().getClassLoader());
-			// Load and instantiate compiled class.
 			Class<?> cls = Class.forName("Scripts."+scriptname, false, child);
-			Object instance = cls.newInstance(); // Should print "world".
-			System.out.println(instance); // Should print "test.Test@hashcode".
+			Object instance = cls.newInstance(); 
+			System.out.println(instance);
 			addScript((GameBehavior)instance,scriptname);
 			}catch(IOException e){
 				System.out.println(e);
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				System.out.println(e);
 				e.printStackTrace();
 			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println(e);
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println(e);
 			}
 	}
-	public void addScriptFile(){
-		try{
-//		 Prepare source somehow.
-		String source = "package test; public class Test { static { System.out.println(\"hello\"); } public Test() { System.out.println(\"world\"); } }";
-		//source = fileSource;
-		// Save source in .java file.
-		File root = new File("C:\\java"); // On Windows running on C:\, this is C:\java.
-		File sourceFile = new File(root, "test/DemoScript1.java");
-//		File sourceFile = new File(root, "C:\\Users\\Ethan\\workspace\\AtariBreakoutFor2\\Scripts\\"+filename);
-		sourceFile.getParentFile().mkdirs();
-		//CharSequence c = source;
-//		//Files.write(path, bytes, options)
-//		Files.write(sourceFile.toPath(),source.getBytes(),(OpenOption)StandardOpenOption.WRITE);
-		
-		System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_60");
-		
-		// Compile source file.
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-		sourceFile = new File("C:\\java\\test\\DemoScript1.java");
-//		sourceFile = new File("C:\\Users\\Ethan\\workspace\\AtariBreakoutFor2\\Scripts\\myScripts\\"+filename);
-		System.out.println(sourceFile.getPath());
-		compiler.run(System.in, System.out, System.err, sourceFile.getPath());
-
-		URL[] classes = {root.toURI().toURL()};
-	    URLClassLoader child = new URLClassLoader (classes, this.getClass().getClassLoader());
-		// Load and instantiate compiled class.
-		//URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { root.toURI().toURL() });
-		//URLClassLoader classLoader2 = (URLClassLoader) URLClassLoader.getSystemClassLoader();
-		//Class<?> cls = Class.forName("test.DemoScript1", false, classLoader); // Should print "hello".
-		Class<?> cls = Class.forName("test.DemoScript1", false, child); // Should print "hello".
-		Object instance = cls.newInstance(); // Should print "world".
-		System.out.println(instance); // Should print "test.Test@hashcode".
-		addScript((GameBehavior)instance,"DemoScript1.java");
-		}catch(IOException e){
-			System.out.println(e);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			System.out.println(e);
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println(e);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println(e);
-		}
-	}
+	
+	
 	/**
 	 * draws the GameObject using the g Graphics component
 	 * 
@@ -238,20 +175,7 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	public void paintGameObject(Graphics g) {
 		if(isDestroyed)
 			return;
-		Graphics2D g2 = (Graphics2D)g;
-//		if (getCollider().getColliderShape() instanceof Circle) {
-//			Circle c = (Circle) getCollider().getColliderShape();
-//			g.setColor(color);
-//			g.fillOval((int) getPosition().getX(), (int) getPosition().getY(), (int) c.getRadius(),
-//					(int) c.getRadius());
-//
-//		} else if (getCollider().getColliderShape() instanceof Rectangle) {
-//			Rectangle r = (Rectangle) getCollider().getColliderShape();
-//			g.setColor(color);
-//			Vector2d convertedPos = getPosition();
-//			g.fillRect((int) convertedPos.getX(), (int) convertedPos.getY(), (int) r.getLengthOfSideB(),
-//					(int) r.getLengthOfSideA());
-//		}
+		Graphics2D g2 = (Graphics2D)g.create();
 		 /* Enable anti-aliasing and pure stroke */
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -259,50 +183,46 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		if (getCollider().getColliderShape() instanceof Circle) {
 			Circle c = (Circle) getCollider().getColliderShape();
 			g2.setColor(color);
-			//g2.rotate(collider.getColliderShape().getRotationAngle());
-			//g2.translate(c.getReferencePoint().getX()+c.getRadius(), c.getReferencePoint().getY()+c.getRadius());
 			Vector2d currentPosition = position;
 			g2.fill(new Ellipse2D.Double(currentPosition.getX()-c.getRadius(),currentPosition.getY()-c.getRadius(),c.getRadius()*2,c.getRadius()*2));
-//			g2.fillOval((int) getPosition().getX(), (int) getPosition().getY(), (int) c.getRadius(),
-//					(int) c.getRadius());
 
 		} else if (getCollider().getColliderShape() instanceof Rectangle) {
 			Rectangle r = (Rectangle) getCollider().getColliderShape();
 			g2.setColor(color);
-			//java.awt.Rectangle rect = new java.awt.Rectangle((int)(r.getReferencePoint().getX()-r.getLengthOfSideB()/2),(int)(r.getReferencePoint().getY()-r.getLengthOfSideA()/2),(int)r.getLengthOfSideB(),(int)r.getLengthOfSideA());
 			Vector2d currentPosition = position;
 			java.awt.Rectangle.Double rect = new java.awt.Rectangle.Double(currentPosition.getX()-r.getLengthOfSideB()/2,currentPosition.getY()-r.getLengthOfSideA()/2,r.getLengthOfSideB(),r.getLengthOfSideA());
-			//Vector2d convertedPos = getPosition();
-			//g2.translate(rect.getX(), r.getReferencePoint().getY());
-			//AffineTransform transform = new AffineTransform();
-			//transform.rotate(90, rect.getX(), rect.getY());
-			//AffineTransform old = g2.getTransform();
-			//g2.transform(transform);
-			// draw your rectangle here...	
-			//g2.setTransform(old);
-			//g2.translate(r.getReferencePoint().getX(), r.getReferencePoint().getY());
-			//g2.rotate(r.getRotationAngle(),r.getReferencePoint().getX()+r.getLengthOfSideB()/2, r.getReferencePoint().getY()+r.getLengthOfSideA()/2);
-//			AffineTransform transform = new AffineTransform();
-			//transform.rotate(r.getRotationAngle(), rect.getX() + rect.width/2, rect.getY() + rect.height/2);
-//			transform.rotate(r.getRotationAngle());
-//			AffineTransform old = g2.getTransform();
-//			g2.transform(transform);
-			//System.out.println("rotate"+r.getRotationAngle());
-			//g2.rotate(r.getRotationAngle());
-			// draw your rectangle here...
+			double angle = collider.getColliderShape().getRotationAngle();
+			angle = Math.toRadians(angle);
+			g2.rotate(angle, position.getX(), position.getY());
 			g2.fill(rect);
-//			g2.setTransform(old);//g2.fill(rect);
-			//g2.rotate(0);
-			//g2.translate(-r.getReferencePoint().getX(), -r.getReferencePoint().getY());
+			//drawClosedShape(r,g2);
+			// draw your rectangle here...
 			
-			//g2.translate(-rect.getWidth() / 2, -rect.getHeight() / 2);
-			
-//			g2.fillRect((int) convertedPos.getX(), (int) convertedPos.getY(), (int) r.getLengthOfSideB(),
-//					(int) r.getLengthOfSideA());
 			
 		}
+		g2.dispose();
 	}
 
+	public void drawClosedShape(Shape collider,Graphics2D g2){
+		ArrayList<Vector2d> newPoints = null;
+		newPoints = collider.getPoints();
+		if(newPoints == null || newPoints.isEmpty())
+			return;
+		for (int i = 0; i < newPoints.size() - 1; i++) {
+			double x1 = newPoints.get(i).getX();
+			double y1 = newPoints.get(i).getY();
+			double x2 = newPoints.get(i + 1).getX();
+			double y2 = newPoints.get(i + 1).getY();
+			
+			g2.draw(new Line2D.Double(x1, y1, x2, y2));	
+		}
+		
+		double x3 = collider.getPoints().get(0).getX();
+		double y3 = collider.getPoints().get(0).getY();
+		double x4 = collider.getPoints().get(collider.getPoints().size() - 1).getX();
+		double y4 = collider.getPoints().get(collider.getPoints().size() - 1).getY();
+		g2.draw(new Line2D.Double(x3, y3, x4, y4));
+	}
 	public void rotate(double angle){
 		Shape s = collider.getColliderShape();
 		if(s instanceof Rectangle)
@@ -312,6 +232,7 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		else
 			collider.getColliderShape().rotate(angle);
 	}
+	
 	@Override
 	public void update(GameObject g) {
 		if(Time.timeScale <= 0)
@@ -340,7 +261,6 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 
 	@Override
 	public void destroy(GameObject g) {
-		// TODO Auto-generated method stub
 		if(!isDestroyed){
 			for (GameBehavior gameBehavior : scripts) {
 				gameBehavior.destroy(g);
@@ -353,7 +273,6 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 
 	@Override
 	public void restore(GameObject g) {
-		// TODO Auto-generated method stub
 		if(!isDestroyed){
 			for (GameBehavior gameBehavior : scripts) {
 				gameBehavior.restore(g);
@@ -378,35 +297,28 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	public void setDestroyOnCollision(boolean destroyOnCollision) {
 		this.destroyOnCollision = destroyOnCollision;
 	}
-//	public void OnCollision(){
-//		if(destroyOnCollision){
-//			destroy();
-//		}
-//	}
-//	
+
 	public void setIsDestroyed(boolean isDestroyed){
 		this.isDestroyed = isDestroyed;
 	}
+
 	public boolean getIsDestroyed(){
 		return isDestroyed;
 	}
-int i = 0,j = 0;
+
 	@Override
 	public void onCollision(Collider other,GameObject g) {
 		if(destroyOnCollision){
 			destroy(g);
 		}
-		System.out.println("i"+(++i));
-		System.out.println("numOfScripts"+scripts.size());
+		
 		for (GameBehavior gameBehavior : scripts) {
-			System.out.println("j"+(++j));
 			gameBehavior.onCollision(other,g);
 		}
 	}
 
 	@Override
 	public void onTrigger(Collider other,GameObject g) {
-		// TODO Auto-generated method stub
 		if(!isTrigger()){
 			return;
 		}
@@ -417,7 +329,6 @@ int i = 0,j = 0;
 
 	@Override
 	public void onDestroy(GameObject g) {
-		// TODO Auto-generated method stub
 		for (GameBehavior gameBehavior : scripts) {
 			gameBehavior.onDestroy(g);
 		}
@@ -425,7 +336,6 @@ int i = 0,j = 0;
 
 	@Override
 	public void onRestore(GameObject g) {
-		// TODO Auto-generated method stub
 		for (GameBehavior gameBehavior : scripts) {
 			gameBehavior.onRestore(g);
 		}

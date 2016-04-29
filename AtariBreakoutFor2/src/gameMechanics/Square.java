@@ -35,7 +35,6 @@ public class Square extends Rectangle {
 	
 	@Override
 	public void moveReferencePoint(Vector2d newReferencePoint) {
-		// TODO Auto-generated method stub
 		super.moveReferencePoint(newReferencePoint);
 	}
 }
