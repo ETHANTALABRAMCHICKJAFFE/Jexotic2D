@@ -4,6 +4,21 @@ import java.util.ArrayList;
 
 public class NewMath {
 
+	public static double min(double[] arr) throws Exception {
+		if (arr.length != 0) {
+			double small = arr[0];
+			double index = 0;
+			for (int i = 0; i < arr.length; i++)
+				if (arr[i] < small) {
+					small = arr[i];
+					index = i;
+				}
+			return small;
+		} else {
+			throw new Exception("array length is 0");
+		}
+	}
+
 	public static double calculateDistanceOfPointToLine(Vector2d p, ArrayList<Vector2d> l) {
 
 		double[] abc = calculateEquationOfLine(l);
@@ -11,37 +26,53 @@ public class NewMath {
 		double b = abc[1];
 		double c = abc[2];
 		double x0 = p.getX(), y0 = p.getY();
-		//System.out.println("a= "+a+";b= "+b+";c= "+c);
+		// System.out.println("a= "+a+";b= "+b+";c= "+c);
 		double dis = Math.abs(a * x0 + b * y0 + c) / Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-		if(dis <= 50)
+		if (dis <= 50)
 			System.out.println(dis);
 		return dis;
 	}
 
-	public static double distanceBetweenPointAndLine(Vector2d point, ArrayList<Vector2d> l){
-		double x0 = point.getX(),y0 = point.getY();
-		double y1,x1,y2,x2;
-		double dis = 1000000000;
-		//if(l.get(0) == null)
-		//System.out.println(l);
-		//try{
-		y1 = l.get(0).getY(); x1 = l.get(0).getX();
-				y2 = l.get(l.size()-1).getY();x2 = l.get(l.size()-1).getX();
-				dis = Math.abs((y1-y2)*x0+(x2-x1)*y0+(x1*y2-x2*y1))/Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
-//		}
-//		catch(IndexOutOfBoundsException e){
-//			System.out.println(e);
-//		}
-		//distance formula
-		
-		//double dis = Math.abs((y1-y2)*x0+(x2-x1)*y0+(x1*y2-x2*y1))/Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
-		return dis;
-		
+	public static double disPointToLine(Vector2d lineStartPoint, Vector2d lineEndPoint, Vector2d P) {
+		double normalLength = Math.sqrt((lineEndPoint.getX() - lineStartPoint.getX())
+				* (lineEndPoint.getX() - lineStartPoint.getX())
+				+ (lineEndPoint.getY() - lineStartPoint.getY()) * (lineEndPoint.getY() - lineStartPoint.getY()));
+		return Math
+				.abs((P.getX() - lineStartPoint.getX()) * (lineEndPoint.getY() - lineStartPoint.getY())
+						- (P.getY() - lineStartPoint.getY()) * (lineEndPoint.getX() - lineStartPoint.getX()))
+				/ normalLength;
 	}
-	
-	public static double clamp(double val,double min,double max){
+
+	public static double distanceBetweenPointAndLine(Vector2d point, ArrayList<Vector2d> l) {
+		double x0 = point.getX(), y0 = point.getY();
+		double y1, x1, y2, x2;
+		double dis = 1000000000;
+		// if(l.get(0) == null)
+		// System.out.println(l);
+		// try{
+		y1 = l.get(0).getY();
+		x1 = l.get(0).getX();
+		y2 = l.get(l.size() - 1).getY();
+		x2 = l.get(l.size() - 1).getX();
+		dis = Math.abs((y1 - y2) * x0 + (x2 - x1) * y0 + (x1 * y2 - x2 * y1))
+				/ Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+				// }
+				// catch(IndexOutOfBoundsException e){
+				// System.out.println(e);
+				// }
+				// distance formula
+
+		// double dis =
+		// Math.abs((y1-y2)*x0+(x2-x1)*y0+(x1*y2-x2*y1))/Math.sqrt(Math.pow(x2-x1,
+		// 2)+Math.pow(y2-y1, 2));
+		return dis;
+
+	}
+
+	public static double clamp(double val, double min, double max) {
 		return Math.max(min, Math.min(max, val));
 	}
+
 	public static double[] calculateEquationOfLine(ArrayList<Vector2d> l) {
 		// y-y1 = m(x-x1);
 		Vector2d startPoint = l.get(0), endPoint = l.get(l.size() - 1);
@@ -51,7 +82,7 @@ public class NewMath {
 		double y1 = startPoint.getY(), y2 = endPoint.getY(), x1 = startPoint.getX(), x2 = endPoint.getX();
 		if (x1 - x2 != 0) {
 			double m = (y2 - y1) / (x2 - x1);
-			//System.out.println(m);
+			// System.out.println(m);
 			double a = m;
 			double b = -1;
 			double c = y1 - m * x1;

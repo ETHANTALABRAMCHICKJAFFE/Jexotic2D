@@ -139,80 +139,110 @@ public class Collider implements Serializable {
 		}
 		return null;
 	}
-	
-	//checkRectSideCircleCollided
+
+	// checkRectSideCircleCollided
 	public static Vector2d checkWhichSideOfRectCircleIsOn(Rectangle r, Circle c) {
 
 		double disCircleRect = Vector2d.findDistanceBetweenTwoVector2ds(c.getReferencePoint(), r.referencePoint);
-		double circleDisFromTop = Vector2d.findDistanceBetweenTwoVector2ds(r.topSideVector, c.referencePoint);
+
+		double circleDisFromTop = NewMath.distanceBetweenPointAndLine(c.referencePoint, r.topSide);
+		// double circleDisFromTop =
+		// Vector2d.findDistanceBetweenTwoVector2ds(r.topSideVector,
+		// c.referencePoint);
 		double deltaTop = disCircleRect - circleDisFromTop;
 
-		double circleDisFromLeft = Vector2d.findDistanceBetweenTwoVector2ds(r.leftSideVector, c.referencePoint);
+		double circleDisFromLeft = NewMath.distanceBetweenPointAndLine(c.referencePoint, r.leftSide);
+		// double circleDisFromLeft =
+		// Vector2d.findDistanceBetweenTwoVector2ds(r.leftSideVector,
+		// c.referencePoint);
 		double deltaLeft = disCircleRect - circleDisFromLeft;
 
-		double circleDisFromRight = Vector2d.findDistanceBetweenTwoVector2ds(r.rightSideVector, c.referencePoint);
+		double circleDisFromRight = NewMath.distanceBetweenPointAndLine(c.referencePoint, r.rightSide);
+		// double circleDisFromRight =
+		// Vector2d.findDistanceBetweenTwoVector2ds(r.rightSideVector,
+		// c.referencePoint);
 		double deltaRight = disCircleRect - circleDisFromRight;
 
-		double circleDisFromBottom = Vector2d.findDistanceBetweenTwoVector2ds(r.bottomSideVector, c.referencePoint);
+		double circleDisFromBottom = NewMath.distanceBetweenPointAndLine(c.referencePoint, r.bottomSide);
+		// double circleDisFromBottom =
+		// Vector2d.findDistanceBetweenTwoVector2ds(r.bottomSideVector,
+		// c.referencePoint);
 		double deltaBottom = disCircleRect - circleDisFromBottom;
 
 		double disWidth = r.getLengthOfSideB() / 2;
 		double disHeight = r.getLengthOfSideA() / 2;
 
-		double min = Math.min(deltaTop, deltaBottom);
-		min = Math.min(min, deltaLeft);
-		min = Math.min(min, deltaRight);
+		// double min = Math.min(deltaTop, deltaBottom);
+		// min = Math.min(min, deltaLeft);
+		// min = Math.min(min, deltaRight);
 
-		if (min == deltaTop) {
-			return r.topSideVector;
-		} else if (min == deltaRight) {
-			return r.rightSideVector;
-		} else if (min == deltaBottom) {
-			return r.bottomSideVector;
-		} else {
-			return r.leftSideVector;
-		}
-	}
-/*
-	*//**
-	 * checks which side of the rectangle the circle is touching
-	 * 
-	 * @param r
-	 *            the rectangle
-	 * @param c
-	 *            the circle
-	 * @return the side of the rectangle that the circle touched
-	 *//*
-	public static Vector2d checkWhichSideOfRectCircleIsOn(Rectangle r, Circle c) {
-		double w = 0.5 * (r.getLengthOfSideB() + c.getRadius() * 2);
-		double h = 0.5 * (r.getLengthOfSideA() + c.getRadius() * 2);
-		double dx = r.getReferencePoint().getX() - c.getReferencePoint().getX();
-		double dy = r.getReferencePoint().getY() - c.getReferencePoint().getY();
-
-		if (Math.abs(dx) <= w && Math.abs(dy) <= h) {
-			 collision! 
-			double wy = w * dy;
-			double hx = h * dx;
-
-			if (wy > hx)
-				if (wy > -hx) {
-					 collision at the top 
-					return r.topSideVector;
-				} else {
-					 on the left 
-					return r.leftSideVector;
-				}
-			else if (wy > -hx) {
-				 on the right 
+		double[] arr = { circleDisFromTop, circleDisFromBottom, circleDisFromLeft, circleDisFromRight };
+		double min;
+		try {
+			min = NewMath.min(arr);
+			if (min == circleDisFromTop) {
+				System.out.println("RectSideTop" + r.topSideVector);
+				return r.topSideVector;
+			} else if (min == circleDisFromRight) {
+				System.out.println("RectSideRight" + r.rightSideVector);
 				return r.rightSideVector;
-			} else {
-				 at the bottom 
+			} else if (min == circleDisFromBottom) {
+				System.out.println("RectSideBottom" + r.bottomSideVector);
 				return r.bottomSideVector;
+			} else if (min == circleDisFromLeft) {
+				System.out.println("RectSideLeft" + r.leftSideVector);
+				return r.leftSideVector;
 			}
+			// if (min == deltaTop) {
+			// System.out.println("RectSideTop" + r.topSideVector);
+			// return r.topSideVector;
+			// } else if (min == deltaRight) {
+			// System.out.println("RectSideRight" + r.rightSideVector);
+			// return r.rightSideVector;
+			// } else if (min == deltaBottom) {
+			// System.out.println("RectSideBottom" + r.bottomSideVector);
+			// return r.bottomSideVector;
+			// } else {
+			// System.out.println("RectSideLeft" + r.leftSideVector);
+			// return r.leftSideVector;
+			// }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		// double min = Math.min(circleDisFromTop, circleDisFromBottom);
+		// min = Math.min(min, circleDisFromLeft);
+		// min = Math.min(min, circleDisFromRight);
+
 		return null;
 	}
-*/
+
+	/*
+		*//**
+			 * checks which side of the rectangle the circle is touching
+			 * 
+			 * @param r
+			 *            the rectangle
+			 * @param c
+			 *            the circle
+			 * @return the side of the rectangle that the circle touched
+			 *//*
+			 * public static Vector2d checkWhichSideOfRectCircleIsOn(Rectangle
+			 * r, Circle c) { double w = 0.5 * (r.getLengthOfSideB() +
+			 * c.getRadius() * 2); double h = 0.5 * (r.getLengthOfSideA() +
+			 * c.getRadius() * 2); double dx = r.getReferencePoint().getX() -
+			 * c.getReferencePoint().getX(); double dy =
+			 * r.getReferencePoint().getY() - c.getReferencePoint().getY();
+			 * 
+			 * if (Math.abs(dx) <= w && Math.abs(dy) <= h) { collision! double
+			 * wy = w * dy; double hx = h * dx;
+			 * 
+			 * if (wy > hx) if (wy > -hx) { collision at the top return
+			 * r.topSideVector; } else { on the left return r.leftSideVector; }
+			 * else if (wy > -hx) { on the right return r.rightSideVector; }
+			 * else { at the bottom return r.bottomSideVector; } } return null;
+			 * }
+			 */
 	public static Vector2d checksNearWhichCornerOfRect(Rectangle r, Shape s) {
 		double disTopLeft = Vector2d.findDistanceBetweenTwoVector2ds(r.topLeftPoint, s.getReferencePoint());
 		double disTopRight = Vector2d.findDistanceBetweenTwoVector2ds(r.topRightPoint, s.getReferencePoint());
@@ -344,11 +374,13 @@ public class Collider implements Serializable {
 		return hit;
 	}
 
-	public static void calculateCollisionOfTwoCircles(Collider c1, Collider c2) {
+	public static void calculateCollisionOfTwoCircles(Collider c1, Collider c2, Vector2d tempFirstVelocity,
+			Vector2d tempSecondVelocity) {
+
 		GameObject firstCircle = (GameObject) c1.parent;
 		GameObject secondCircle = (GameObject) c2.parent;
-		Vector2d tempFirstVelocity = new Vector2d(firstCircle.velocity);
-		Vector2d tempSecondVelocity = new Vector2d(secondCircle.velocity);
+		// Vector2d tempFirstVelocity = new Vector2d(firstCircle.velocity);
+		// Vector2d tempSecondVelocity = new Vector2d(secondCircle.velocity);
 		if (GameManager.realisticCollisions) {
 			double mass1 = firstCircle.mass;
 			double mass2 = secondCircle.mass;
@@ -377,31 +409,10 @@ public class Collider implements Serializable {
 	}
 
 	public static boolean areCircleAndRectangleGoingToCollide(Rectangle r, Circle c, Vector2d movevec) {
-		ArrayList<Vector2d> topSide = new ArrayList<Vector2d>();
-		topSide.add(r.topLeftPoint);
-		topSide.add(r.topRightPoint);
-		ArrayList<Vector2d> bottomSide = new ArrayList<Vector2d>();
-		bottomSide.add(r.bottomLeftPoint);
-		bottomSide.add(r.bottomRightPoint);
-		ArrayList<Vector2d> leftSide = new ArrayList<Vector2d>();
-		leftSide.add(r.topLeftPoint);
-		leftSide.add(r.bottomLeftPoint);
-		ArrayList<Vector2d> rightSide = new ArrayList<Vector2d>();
-		rightSide.add(r.topRightPoint);
-		rightSide.add(r.bottomRightPoint);
-		boolean collideWithTop = areCircleAndLineGoingToCollide(topSide, c, movevec);
-		boolean collideWithLeft = areCircleAndLineGoingToCollide(leftSide, c, movevec);
-		boolean collideWithBottom = areCircleAndLineGoingToCollide(bottomSide, c, movevec);
-		boolean collideWithRight = areCircleAndLineGoingToCollide(rightSide, c, movevec);
-//		boolean collideWithTop = areCircleAndLineGoingToCollide(r.topSide, c, movevec);
-//		boolean collideWithLeft = areCircleAndLineGoingToCollide(r.leftSide, c, movevec);
-//		boolean collideWithBottom = areCircleAndLineGoingToCollide(r.bottomSide, c, movevec);
-//		boolean collideWithRight = areCircleAndLineGoingToCollide(r.rightSide, c, movevec);
-
-		if (collideWithTop || collideWithBottom || collideWithLeft || collideWithRight) {
-			return true;
-		}
-		return false;
+		return areCircleAndLineGoingToCollide(r.topSide, c, movevec)
+				|| areCircleAndLineGoingToCollide(r.leftSide, c, movevec)
+				|| areCircleAndLineGoingToCollide(r.bottomSide, c, movevec)
+				|| areCircleAndLineGoingToCollide(r.rightSide, c, movevec);
 	}
 
 	public static boolean areCircleAndCornerGoingToCollide(Circle A, Vector2d cornerPoint, Vector2d movevec) {
@@ -488,25 +499,34 @@ public class Collider implements Serializable {
 		// than distance between the centers of these circles minus
 		// their radii, there's no way they can hit.
 		Circle A = c;
-		double dist = NewMath.distanceBetweenPointAndLine(A.referencePoint, line);
+		Vector2d startPoint = line.get(0), endPoint = line.get(line.size() - 1);
+		double dist = NewMath.disPointToLine(startPoint, endPoint, A.referencePoint);
+		//System.out.println("dist"+dist);
 		double sumRadii = (A.getRadius());
 		dist -= sumRadii;
 		if (movevec.length() < dist) {
+			
+			//System.out.println("movevec.length() < dist; movevec.length= "+movevec.length()+", dist"+ dist);
 			return false;
 		}
 
 		// Normalize the movevec
 		Vector2d N = movevec.normalized();
 
-		Vector2d startPoint = line.get(0), endPoint = line.get(line.size() - 1);
+		//Vector2d startPoint = line.get(0), endPoint = line.get(line.size() - 1);
 		// the point on the line that is the closest to the center of circle A
-		Vector2d distancePoint = Vector2d.findPointThatNormalOfAPointToALineMeet(startPoint, endPoint, A.referencePoint);
-		
-		if(Vector2d.findDistanceBetweenTwoVector2ds(distancePoint, startPoint)+Vector2d.findDistanceBetweenTwoVector2ds(distancePoint, endPoint)
-		 != Vector2d.findDistanceBetweenTwoVector2ds(startPoint, endPoint)){
+		Vector2d distancePoint = Vector2d.findPointThatNormalOfAPointToALineMeet(startPoint, endPoint,
+				A.referencePoint);
+
+		double deltaDis = Vector2d.findDistanceBetweenTwoVector2ds(distancePoint, startPoint)
+				+ Vector2d.findDistanceBetweenTwoVector2ds(distancePoint, endPoint) - Vector2d
+				.findDistanceBetweenTwoVector2ds(startPoint, endPoint);
+		double epsilon = 0.5;
+		if (!(deltaDis > -epsilon && deltaDis < epsilon)) {
+			//System.out.println("outside of line");
 			return false;
 		}
-		//System.err.println("distancePoint"+distancePoint);
+		// System.err.println("distancePoint"+distancePoint);
 		// Find C, the vector from the center of the moving
 		// circle A to the center of B
 		Vector2d C = Vector2d.sub(distancePoint, A.referencePoint);
@@ -519,6 +539,7 @@ public class Collider implements Serializable {
 		// B.center - A.center is less that or equal to 0,
 		// A isn't isn't moving towards B
 		if (D <= 0) {
+			//System.out.println("not moving towards B");
 			return false;
 		}
 		// Find the length of the vector C
@@ -531,6 +552,7 @@ public class Collider implements Serializable {
 		// way they are going collide
 		double sumRadiiSquared = sumRadii * sumRadii;
 		if (F >= sumRadiiSquared) {
+			//System.out.println("not going to collide");
 			return false;
 		}
 
@@ -543,6 +565,7 @@ public class Collider implements Serializable {
 		// Better to check now than perform a square root of a
 		// negative number.
 		if (T < 0) {
+			//System.out.println("T < 0");
 			return false;
 		}
 
@@ -557,6 +580,7 @@ public class Collider implements Serializable {
 		// to touch B is not greater than the magnitude of the
 		// movement vector.
 		if (mag < distance) {
+			//System.out.println("mag < distance");
 			return false;
 		}
 
@@ -575,8 +599,9 @@ public class Collider implements Serializable {
 	 * @param movevec
 	 * @return returns vector2d.zero() if it is a corner;
 	 */
-	public static boolean areCirclesGoingToCollide(Circle A, Circle B, Vector2d movevec) {
+	public static boolean areCirclesGoingToCollide(Circle A, Circle B, Vector2d movevec, GameObject a, GameObject b) {
 
+		double originalMovevecLength = movevec.length();
 		// Early Escape test: if the length of the movevec is less
 		// than distance between the centers of these circles minus
 		// their radii, there's no way they can hit.
@@ -650,6 +675,11 @@ public class Collider implements Serializable {
 		// movevec.normalize();
 		// movevec.times(distance);
 		movevec = Vector2d.mul(distance, movevec.normalized());
+		if (!a.isTrigger() && !b.isTrigger() && a.isMovable && b.isMovable) {
+			double touchParameter = movevec.length() / originalMovevecLength;
+			a.setVelocity(Vector2d.mul(touchParameter, a.velocity));
+			b.setVelocity(Vector2d.mul(touchParameter, b.velocity));
+		}
 		return true;
 
 	}
@@ -702,9 +732,9 @@ public class Collider implements Serializable {
 			double x4 = collider.getPoints().get(collider.getPoints().size() - 1).getX();
 			double y4 = collider.getPoints().get(collider.getPoints().size() - 1).getY();
 			g2.draw(new Line2D.Double(x3, y3, x4, y4));
-			
+
 			g2.fill(new Ellipse2D.Double(x4 - 2.5, y4 - 2.5, 5, 5));
-			if(collider instanceof Rectangle){
+			if (collider instanceof Rectangle) {
 				Rectangle r = (Rectangle) collider;
 				g2.setColor(Color.orange);
 				g2.fill(new Ellipse2D.Double(r.topLeftPoint.getX() - 2.5, r.topLeftPoint.getY() - 2.5, 5, 5));

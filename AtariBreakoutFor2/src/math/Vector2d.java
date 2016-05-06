@@ -63,6 +63,12 @@ public class Vector2d implements Serializable{
 			return x;
 	}
 	public Vector2d reflect(Vector2d normal){
+//		Vector2d d = this;
+//		Vector2d n = normal;
+//		double lengthN =n.length();
+//		lengthN *= lengthN;
+//		double dXn = dotProduct(d, n);
+//		return add(d,div(lengthN,mul(-2*dXn,n)));
 		return add(mul(-2*dotProduct(normal.normalized(), this),normal.normalized()), this);
 	}
 	public Vector2d normalized(){
@@ -98,6 +104,16 @@ public class Vector2d implements Serializable{
 	 * @return return the vector that is perpendicular to this vector 
 	 */
 	public static Vector2d getNormalOfVector(Vector2d v){
+		//System.out.println("tangent"+v.normalized());
+	//	double length = v.length();
+		//Vector2d tangentV = div(1/length, v);
+		//double tangentLength = tangentV.length();
+		//System.out.println("tangentV"+tangentV);
+		//Vector2d normalizedV = v.normalized();
+		//double normvlength = normalizedV.length();
+		//System.out.println("1/normvlength"+1/normvlength);
+		//Vector2d normal = mul(1/tangentLength,tangentV);
+		//return normal;
 		return new Vector2d(-v.y,v.x);
 	}
 	

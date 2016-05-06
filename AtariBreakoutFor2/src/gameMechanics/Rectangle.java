@@ -43,6 +43,10 @@ public class Rectangle extends Shape {
 		leftSide = new ArrayList<Vector2d>();
 		setShapeHeight(lengthOfSideA);
 		setShapeWidth(lengthOfSideB);
+		topLeftPoint = points.get(0);
+		topRightPoint = points.get(1);
+		bottomLeftPoint = points.get(2);
+		bottomRightPoint = points.get(3);
 		calculateSides(this);
 		calculateNormalizedDirectionOfEachCorner();
 	}
@@ -481,8 +485,8 @@ public class Rectangle extends Shape {
 //		Vector2d topRightCorner = Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(1, topLeftToRightDirection).normalized(),topRightPoint), topRightPoint, Math.toRadians(45)).normalized();
 //		Vector2d bottomLeftCorner = Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(1, bottomRightToLeftDirection).normalized(),bottomLeftPoint), bottomLeftPoint, Math.toRadians(45)).normalized();
 //		Vector2d bottomRightCorner =Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(-1, bottomRightToLeftDirection).normalized(),bottomRightPoint), bottomRightPoint, Math.toRadians(45)).normalized();
-		System.out.println("topleftdir"+topLeftCorner+", toprightdir"+topRightCorner+", bottomleftdir"+
-		bottomLeftCorner+", bottomrightdir"+bottomRightCorner);
+//		System.out.println("topleftdir"+topLeftCorner+", toprightdir"+topRightCorner+", bottomleftdir"+
+//		bottomLeftCorner+", bottomrightdir"+bottomRightCorner);
 		this.directionBottomLeft = bottomLeftCorner;
 		this.directionBottomRight = bottomRightCorner;
 		this.directionTopLeft = topLeftCorner;
@@ -496,6 +500,7 @@ public class Rectangle extends Shape {
 		bottomSide = new ArrayList<Vector2d>();
 		leftSide = new ArrayList<Vector2d>();
 
+		
 		// calculateSides
 		topSide.add(topLeftPoint);
 		topSide.add(topRightPoint);
@@ -506,7 +511,7 @@ public class Rectangle extends Shape {
 		bottomSide.add(bottomRightPoint);
 		leftSide.add(topLeftPoint);
 		leftSide.add(bottomLeftPoint);
-		bottomSideVector = Vector2d.sub(bottomLeftPoint, bottomRightPoint);
+		bottomSideVector = Vector2d.sub(bottomRightPoint, bottomLeftPoint);
 		rightSideVector = Vector2d.sub(topRightPoint, bottomRightPoint);
 		topSideVector = Vector2d.sub(topLeftPoint, topRightPoint);
 		leftSideVector = Vector2d.sub(topLeftPoint, bottomLeftPoint);

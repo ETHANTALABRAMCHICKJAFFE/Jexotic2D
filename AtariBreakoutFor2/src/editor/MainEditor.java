@@ -315,9 +315,9 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 	public void addRectangle() {
 		Vector2d position = new Vector2d(Math.random() * 500 + 200, Math.random() * 500 + 50);
 		// double radius = 20;
-		double height = 50, width = 50;
+		double height = 100, width = 100;
 		Rectangle r = new Rectangle(position, height, width, 0);
-		r.rotate(45);
+		r.rotate(0);
 		//r.setRotationAngle(45);
 		Collider c = new Collider(r, numOfGameObjects);
 		c.setDrawCollider(true);

@@ -127,11 +127,15 @@ public class GameManager implements Runnable {
 			Circle c = (Circle) circleGameObject1.getCollider().getColliderShape();
 			Vector2d movevec = Vector2d.sub(circleGameObject1.velocity, rectangleGameObject1.velocity);
 			//Vector2d movevec = circleGameObject1.velocity;
+//			if(!rectangleGameObject1.getName().equals("45Square"))
+//				return;
 			if (!Collider.areCircleAndRectangleGoingToCollide(r, c, movevec)){
+				//System.out.println("leftSide"+r.leftSide);
 				//deleteCollision(c1, c2);
+				//System.err.println("collision detected!!!!!!!!!!!");
 				return;
 			}
-			
+			System.out.println("leftSide"+r.leftSide);
 			Vector2d hit = Collider.detectCollision(circleGameObject1.collider, rectangleGameObject1.collider);
 			Vector2d cornerHit = Collider.detectCornerCollision(circleGameObject1.collider,
 					rectangleGameObject1.collider);
@@ -170,12 +174,12 @@ public class GameManager implements Runnable {
 						}
 						if (rectangleGameObject1.isMovable)
 							rectangleGameObject1.setVelocity(circleGameObject1.getVelocity());
-						System.out.println("cornerHit"+cornerHit.getX()+","+cornerHit
-								.getY());
+//						System.out.println("cornerHit"+cornerHit.getX()+","+cornerHit
+//								.getY());
 						
 						if (circleGameObject1.isMovable){
 							Vector2d newCornerVelocity = Vector2d.mul(circleGameObject1.getVelocity().length(), cornerHit);
-							System.out.println("CornerVelocity"+newCornerVelocity);
+							//System.out.println("CornerVelocity"+newCornerVelocity);
 							circleGameObject1.setVelocity(newCornerVelocity);
 						}
 						circleGameObject1.onCollision(rectangleGameObject1.collider, circleGameObject1);
@@ -231,9 +235,13 @@ public class GameManager implements Runnable {
 						}
 						if (rectangleGameObject1.isMovable)
 							rectangleGameObject1.setVelocity(circleGameObject1.getVelocity());
-						if (circleGameObject1.isMovable)
+						if (circleGameObject1.isMovable){
+							Vector2d newV = circleGameObject1.getVelocity().reflect(Vector2d.getNormalOfVector(hit.normalized()));
 							circleGameObject1.setVelocity(
-									circleGameObject1.getVelocity().reflect(Vector2d.getNormalOfVector(hit)));
+									newV);
+							System.out.println("hitNormal"+Vector2d.getNormalOfVector(hit.normalized())+"newHitVelocity"+
+									newV);
+						}
 						circleGameObject1.onCollision(rectangleGameObject1.collider, circleGameObject1);
 						rectangleGameObject1.onCollision(circleGameObject1.collider, rectangleGameObject1);
 					} if(circleGameObject1.isTrigger() && !rectangleGameObject1.isTrigger()) {
@@ -248,15 +256,17 @@ public class GameManager implements Runnable {
 		} else if (circleGameObjects.size() == 2) {
 			circleGameObject1 = circleGameObjects.get(0);
 			circleGameObject2 = circleGameObjects.get(1);
+			Vector2d v1 = circleGameObject1.velocity;
+			Vector2d v2 = circleGameObject2.velocity;
 			if (!Collider.areCirclesGoingToCollide(((Circle) circleGameObject1.getCollider().getColliderShape()),
 					(Circle) circleGameObject2.getCollider().getColliderShape(),
-					Vector2d.sub(circleGameObject1.velocity, circleGameObject2.velocity))) {
+					Vector2d.sub(circleGameObject1.velocity, circleGameObject2.velocity),circleGameObject1,circleGameObject2)) {
 				//deleteCollision(c1, c2);
 				return;
 			}
 			//collisions.add(new Collision(circleGameObject1.collider, circleGameObject2.collider, null));
 			if (!circleGameObject1.isTrigger() && !circleGameObject2.isTrigger()) {
-				Collider.calculateCollisionOfTwoCircles(circleGameObject1.collider, circleGameObject2.collider);
+				Collider.calculateCollisionOfTwoCircles(circleGameObject1.collider, circleGameObject2.collider,v1,v2);
 				circleGameObject1.onCollision(circleGameObject2.collider, circleGameObject1);
 				circleGameObject2.onCollision(circleGameObject1.collider, circleGameObject2);
 			} if(circleGameObject1.isTrigger() && !circleGameObject2.isTrigger()) {
