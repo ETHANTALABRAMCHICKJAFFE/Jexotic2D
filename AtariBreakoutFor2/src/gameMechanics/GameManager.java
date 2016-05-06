@@ -129,7 +129,9 @@ public class GameManager implements Runnable {
 			//Vector2d movevec = circleGameObject1.velocity;
 //			if(!rectangleGameObject1.getName().equals("45Square"))
 //				return;
-			if (!Collider.areCircleAndRectangleGoingToCollide(r, c, movevec)){
+			Vector2d v1 = circleGameObject1.velocity;
+			Vector2d v2 = rectangleGameObject1.velocity;
+			if (!Collider.areCircleAndRectangleGoingToCollide(r, c, movevec, circleGameObject1, rectangleGameObject1)){
 				//System.out.println("leftSide"+r.leftSide);
 				//deleteCollision(c1, c2);
 				//System.err.println("collision detected!!!!!!!!!!!");
@@ -147,21 +149,21 @@ public class GameManager implements Runnable {
 						if (GameManager.realisticCollisions) {
 							double mass1 = circleGameObject1.mass;
 							double mass2 = rectangleGameObject1.mass;
-							double newVelX1 = (circleGameObject1.velocity.getX()
+							double newVelX1 = (v1.getX()
 									* (circleGameObject1.mass - rectangleGameObject1.mass)
-									+ (2 * rectangleGameObject1.mass * rectangleGameObject1.velocity.getX()))
+									+ (2 * rectangleGameObject1.mass * v2.getX()))
 									/ (circleGameObject1.mass + rectangleGameObject1.mass);
-							double newVelY1 = (circleGameObject1.velocity.getY()
+							double newVelY1 = (v1.getY()
 									* (circleGameObject1.mass - rectangleGameObject1.mass)
-									+ (2 * rectangleGameObject1.mass * rectangleGameObject1.velocity.getY()))
+									+ (2 * rectangleGameObject1.mass * v2.getY()))
 									/ (circleGameObject1.mass + rectangleGameObject1.mass);
-							double newVelX2 = (rectangleGameObject1.velocity.getX()
+							double newVelX2 = (v2.getX()
 									* (rectangleGameObject1.mass - circleGameObject1.mass)
-									+ (2 * circleGameObject1.mass * circleGameObject1.velocity.getX()))
+									+ (2 * circleGameObject1.mass * v1.getX()))
 									/ (circleGameObject1.mass + rectangleGameObject1.mass);
-							double newVelY2 = (rectangleGameObject1.velocity.getY()
+							double newVelY2 = (v2.getY()
 									* (rectangleGameObject1.mass - circleGameObject1.mass)
-									+ (2 * circleGameObject1.mass * circleGameObject1.velocity.getY()))
+									+ (2 * circleGameObject1.mass * v1.getY()))
 									/ (circleGameObject1.mass + rectangleGameObject1.mass);
 							double normalizedCircleVelDirection = (new Vector2d(newVelX1, newVelY1)).length();
 							Vector2d newVel = Vector2d.mul(normalizedCircleVelDirection, cornerHit.normalized());
@@ -173,7 +175,7 @@ public class GameManager implements Runnable {
 							return;
 						}
 						if (rectangleGameObject1.isMovable)
-							rectangleGameObject1.setVelocity(circleGameObject1.getVelocity());
+							rectangleGameObject1.setVelocity(v1);
 //						System.out.println("cornerHit"+cornerHit.getX()+","+cornerHit
 //								.getY());
 						
@@ -204,24 +206,24 @@ public class GameManager implements Runnable {
 						if (GameManager.realisticCollisions) {
 							double mass1 = circleGameObject1.mass;
 							double mass2 = rectangleGameObject1.mass;
-							double newVelX1 = (circleGameObject1.velocity.getX()
+							double newVelX1 = (v1.getX()
 									* (circleGameObject1.mass - rectangleGameObject1.mass)
-									+ (2 * rectangleGameObject1.mass * rectangleGameObject1.velocity.getX()))
+									+ (2 * rectangleGameObject1.mass * v2.getX()))
 									/ (circleGameObject1.mass + rectangleGameObject1.mass);
-							double newVelY1 = (circleGameObject1.velocity.getY()
+							double newVelY1 = (v1.getY()
 									* (circleGameObject1.mass - rectangleGameObject1.mass)
-									+ (2 * rectangleGameObject1.mass * rectangleGameObject1.velocity.getY()))
+									+ (2 * rectangleGameObject1.mass * v2.getY()))
 									/ (circleGameObject1.mass + rectangleGameObject1.mass);
-							double newVelX2 = (rectangleGameObject1.velocity.getX()
+							double newVelX2 = (v2.getX()
 									* (rectangleGameObject1.mass - circleGameObject1.mass)
-									+ (2 * circleGameObject1.mass * circleGameObject1.velocity.getX()))
+									+ (2 * circleGameObject1.mass * v1.getX()))
 									/ (circleGameObject1.mass + rectangleGameObject1.mass);
-							double newVelY2 = (rectangleGameObject1.velocity.getY()
+							double newVelY2 = (v2.getY()
 									* (rectangleGameObject1.mass - circleGameObject1.mass)
-									+ (2 * circleGameObject1.mass * circleGameObject1.velocity.getY()))
+									+ (2 * circleGameObject1.mass * v1.getY()))
 									/ (circleGameObject1.mass + rectangleGameObject1.mass);
 							double normalizedCircleVelDirection = (new Vector2d(newVelX1, newVelY1)).length();
-							Vector2d reflectedVel = circleGameObject1.getVelocity()
+							Vector2d reflectedVel = v1
 									.reflect(Vector2d.getNormalOfVector(hit));
 							System.out.println("reflected1" + reflectedVel);
 							reflectedVel = Vector2d.mul(normalizedCircleVelDirection, reflectedVel.normalized());
@@ -234,9 +236,9 @@ public class GameManager implements Runnable {
 							return;
 						}
 						if (rectangleGameObject1.isMovable)
-							rectangleGameObject1.setVelocity(circleGameObject1.getVelocity());
+							rectangleGameObject1.setVelocity(v1);
 						if (circleGameObject1.isMovable){
-							Vector2d newV = circleGameObject1.getVelocity().reflect(Vector2d.getNormalOfVector(hit.normalized()));
+							Vector2d newV = v1.reflect(Vector2d.getNormalOfVector(hit.normalized()));
 							circleGameObject1.setVelocity(
 									newV);
 							System.out.println("hitNormal"+Vector2d.getNormalOfVector(hit.normalized())+"newHitVelocity"+

@@ -408,11 +408,11 @@ public class Collider implements Serializable {
 			secondCircle.setVelocity(tempFirstVelocity);
 	}
 
-	public static boolean areCircleAndRectangleGoingToCollide(Rectangle r, Circle c, Vector2d movevec) {
-		return areCircleAndLineGoingToCollide(r.topSide, c, movevec)
-				|| areCircleAndLineGoingToCollide(r.leftSide, c, movevec)
-				|| areCircleAndLineGoingToCollide(r.bottomSide, c, movevec)
-				|| areCircleAndLineGoingToCollide(r.rightSide, c, movevec);
+	public static boolean areCircleAndRectangleGoingToCollide(Rectangle r, Circle c, Vector2d movevec, GameObject circle, GameObject rect) {
+		return areCircleAndLineGoingToCollide(r.topSide, c, movevec, circle, rect)
+				|| areCircleAndLineGoingToCollide(r.leftSide, c, movevec, circle, rect)
+				|| areCircleAndLineGoingToCollide(r.bottomSide, c, movevec, circle, rect)
+				|| areCircleAndLineGoingToCollide(r.rightSide, c, movevec, circle, rect);
 	}
 
 	public static boolean areCircleAndCornerGoingToCollide(Circle A, Vector2d cornerPoint, Vector2d movevec) {
@@ -494,7 +494,9 @@ public class Collider implements Serializable {
 
 	}
 
-	public static boolean areCircleAndLineGoingToCollide(ArrayList<Vector2d> line, Circle c, Vector2d movevec) {
+	public static boolean areCircleAndLineGoingToCollide(ArrayList<Vector2d> line, Circle c, Vector2d movevec, GameObject circle, GameObject rect) {
+		double originalMovevecLength = movevec.length();
+		
 		// Early Escape test: if the length of the movevec is less
 		// than distance between the centers of these circles minus
 		// their radii, there's no way they can hit.
@@ -589,6 +591,12 @@ public class Collider implements Serializable {
 		// movevec.normalize();
 		// movevec.times(distance);
 		movevec = Vector2d.mul(distance, movevec.normalized());
+		
+		if (!circle.isTrigger() && !rect.isTrigger() && circle.isMovable && rect.isMovable) {
+			double touchParameter = movevec.length() / originalMovevecLength;
+			circle.setVelocity(Vector2d.mul(touchParameter, circle.velocity));
+			rect.setVelocity(Vector2d.mul(touchParameter, rect.velocity));
+		}
 		return true;
 	}
 
