@@ -250,7 +250,7 @@ public class Rectangle extends Shape {
 		bottomLeftPoint = Vector2d.rotatePointAroundAnotherPoint(bottomLeftPoint, referencePoint, deltaAngle);
 		bottomRightPoint = Vector2d.rotatePointAroundAnotherPoint(bottomRightPoint, referencePoint, deltaAngle);
 
-		System.out.println(this.referencePoint+"bottomrightpoint1"+bottomRightPoint);
+		//System.out.println(this.referencePoint+"bottomrightpoint1"+bottomRightPoint);
 		topLeftPoint = Vector2d.rotatePointAroundAnotherPoint(topLeftPoint, referencePoint, angle);
 		topRightPoint = Vector2d.rotatePointAroundAnotherPoint(topRightPoint, referencePoint, angle);
 		bottomLeftPoint = Vector2d.rotatePointAroundAnotherPoint(bottomLeftPoint, referencePoint, angle);
@@ -258,7 +258,7 @@ public class Rectangle extends Shape {
 		//System.out.println("topleftp"+topLeftPoint+"toprightp"+topRightPoint+"ijk"+ijk);
 		calculateNormalizedDirectionOfEachCorner();
 		calculateCornersAndSides();
-		System.out.println(this.referencePoint+"bottomrightpoint2"+bottomRightPoint);
+		//System.out.println(this.referencePoint+"bottomrightpoint2"+bottomRightPoint);
 	}
 
 	public void rotate(double angle) {

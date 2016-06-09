@@ -181,16 +181,16 @@ public class Collider implements Serializable {
 		try {
 			min = NewMath.min(arr);
 			if (min == circleDisFromTop) {
-				System.out.println("RectSideTop" + r.topSideVector);
+				//System.out.println("RectSideTop" + r.topSideVector);
 				return r.topSideVector;
 			} else if (min == circleDisFromRight) {
-				System.out.println("RectSideRight" + r.rightSideVector);
+				//System.out.println("RectSideRight" + r.rightSideVector);
 				return r.rightSideVector;
 			} else if (min == circleDisFromBottom) {
-				System.out.println("RectSideBottom" + r.bottomSideVector);
+				//System.out.println("RectSideBottom" + r.bottomSideVector);
 				return r.bottomSideVector;
 			} else if (min == circleDisFromLeft) {
-				System.out.println("RectSideLeft" + r.leftSideVector);
+				//System.out.println("RectSideLeft" + r.leftSideVector);
 				return r.leftSideVector;
 			}
 			// if (min == deltaTop) {

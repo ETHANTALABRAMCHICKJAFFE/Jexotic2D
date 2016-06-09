@@ -137,11 +137,11 @@ public class GameManager implements Runnable {
 				//System.err.println("collision detected!!!!!!!!!!!");
 				return;
 			}
-			System.out.println("leftSide"+r.leftSide);
+			//System.out.println("leftSide"+r.leftSide);
 			Vector2d hit = Collider.detectCollision(circleGameObject1.collider, rectangleGameObject1.collider);
 			Vector2d cornerHit = Collider.detectCornerCollision(circleGameObject1.collider,
 					rectangleGameObject1.collider);
-			System.err.println("collided: "+rectangleGameObject1.getName()+"; atPosition:"+circleGameObject1.position+"; hit: "+hit.getX()+","+hit.getY());
+			//System.err.println("collided: "+rectangleGameObject1.getName()+"; atPosition:"+circleGameObject1.position+"; hit: "+hit.getX()+","+hit.getY());
 			//collisions.add(new Collision(rectangleGameObject1.collider, circleGameObject1.collider, cornerHit));
 			if (cornerHit != null) {
 				if (!circleGameObject1.getIsDestroyed() && !rectangleGameObject1.getIsDestroyed()) {
@@ -171,7 +171,7 @@ public class GameManager implements Runnable {
 								circleGameObject1.setVelocity(newVel);
 							if (rectangleGameObject1.isMovable)
 								rectangleGameObject1.setVelocity(new Vector2d(newVelX2, newVelY2));
-							System.out.println("oops");
+							//System.out.println("oops");
 							return;
 						}
 						if (rectangleGameObject1.isMovable)
@@ -225,10 +225,10 @@ public class GameManager implements Runnable {
 							double normalizedCircleVelDirection = (new Vector2d(newVelX1, newVelY1)).length();
 							Vector2d reflectedVel = v1
 									.reflect(Vector2d.getNormalOfVector(hit));
-							System.out.println("reflected1" + reflectedVel);
+							//System.out.println("reflected1" + reflectedVel);
 							reflectedVel = Vector2d.mul(normalizedCircleVelDirection, reflectedVel.normalized());
-							System.out.println("reflected2" + reflectedVel);
-							System.out.println("newVel" + new Vector2d(newVelX2, newVelY2));
+							//System.out.println("reflected2" + reflectedVel);
+							//System.out.println("newVel" + new Vector2d(newVelX2, newVelY2));
 							if (circleGameObject1.isMovable)
 								circleGameObject1.setVelocity(reflectedVel);
 							if (rectangleGameObject1.isMovable)
@@ -241,8 +241,8 @@ public class GameManager implements Runnable {
 							Vector2d newV = v1.reflect(Vector2d.getNormalOfVector(hit.normalized()));
 							circleGameObject1.setVelocity(
 									newV);
-							System.out.println("hitNormal"+Vector2d.getNormalOfVector(hit.normalized())+"newHitVelocity"+
-									newV);
+							//System.out.println("hitNormal"+Vector2d.getNormalOfVector(hit.normalized())+"newHitVelocity"+
+								//	newV);
 						}
 						circleGameObject1.onCollision(rectangleGameObject1.collider, circleGameObject1);
 						rectangleGameObject1.onCollision(circleGameObject1.collider, rectangleGameObject1);

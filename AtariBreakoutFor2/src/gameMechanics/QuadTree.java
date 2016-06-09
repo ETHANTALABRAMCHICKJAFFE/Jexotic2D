@@ -5,8 +5,8 @@ import java.util.List;
 import java.awt.Rectangle;
 public class QuadTree {
 	 
-	  private int MAX_OBJECTS = 10; // 10
-	  private int MAX_LEVELS = 5; // 5
+	  private int MAX_OBJECTS = 5; // 10
+	  private int MAX_LEVELS = 10; // 5
 	 
 	  private int level;
 	  private List<Collider> objects;

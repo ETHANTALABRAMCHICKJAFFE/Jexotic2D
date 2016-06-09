@@ -248,7 +248,7 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 			gameBehavior.update(g);
 		}
 		getCollider().updatePosition(Vector2d.mul(Time.timeScale,Vector2d.mul(Time.deltaTime,velocity)));
-		System.out.println("rotatiionAngle"+collider.getColliderID()+":"+collider.getColliderShape().getRotationAngle());
+		//System.out.println("rotatiionAngle"+collider.getColliderID()+":"+collider.getColliderShape().getRotationAngle());
 		//rotate(collider.getColliderShape().getRotationAngle()+1);
 	}
 
