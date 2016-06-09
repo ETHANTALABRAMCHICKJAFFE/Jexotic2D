@@ -240,20 +240,33 @@ public class Rectangle extends Shape {
 	}
 
 	int ijk = 0;
-	public void rotateCorners(double angle) {
-		ijk++;
+	public void rotateCorners(double prevAngle,double angle) {
+		
+
+		double deltaAngle = -prevAngle;
+		
+		topLeftPoint = Vector2d.rotatePointAroundAnotherPoint(topLeftPoint, referencePoint, deltaAngle);
+		topRightPoint = Vector2d.rotatePointAroundAnotherPoint(topRightPoint, referencePoint, deltaAngle);
+		bottomLeftPoint = Vector2d.rotatePointAroundAnotherPoint(bottomLeftPoint, referencePoint, deltaAngle);
+		bottomRightPoint = Vector2d.rotatePointAroundAnotherPoint(bottomRightPoint, referencePoint, deltaAngle);
+
+		System.out.println(this.referencePoint+"bottomrightpoint1"+bottomRightPoint);
 		topLeftPoint = Vector2d.rotatePointAroundAnotherPoint(topLeftPoint, referencePoint, angle);
 		topRightPoint = Vector2d.rotatePointAroundAnotherPoint(topRightPoint, referencePoint, angle);
 		bottomLeftPoint = Vector2d.rotatePointAroundAnotherPoint(bottomLeftPoint, referencePoint, angle);
 		bottomRightPoint = Vector2d.rotatePointAroundAnotherPoint(bottomRightPoint, referencePoint, angle);
-		System.out.println("topleftp"+topLeftPoint+"toprightp"+topRightPoint+"ijk"+ijk);
+		//System.out.println("topleftp"+topLeftPoint+"toprightp"+topRightPoint+"ijk"+ijk);
 		calculateNormalizedDirectionOfEachCorner();
+		calculateCornersAndSides();
+		System.out.println(this.referencePoint+"bottomrightpoint2"+bottomRightPoint);
 	}
 
 	public void rotate(double angle) {
+		double prevAngle = this.rotationAngle;
 		super.rotate(angle);
-		rotateCorners(Math.toRadians(angle));
-		calculateCornersAndSides();
+		rotateCorners(Math.toRadians(prevAngle),Math.toRadians(angle));
+		
+		//calculateCornersAndSides();
 	}
 
 	/**

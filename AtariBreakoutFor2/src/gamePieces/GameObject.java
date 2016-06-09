@@ -184,6 +184,10 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 			Circle c = (Circle) getCollider().getColliderShape();
 			g2.setColor(color);
 			Vector2d currentPosition = position;
+			double angle = collider.getColliderShape().getRotationAngle();
+			angle = Math.toRadians(angle);
+			g2.rotate(angle, position.getX(), position.getY());
+			
 			g2.fill(new Ellipse2D.Double(currentPosition.getX()-c.getRadius(),currentPosition.getY()-c.getRadius(),c.getRadius()*2,c.getRadius()*2));
 
 		} else if (getCollider().getColliderShape() instanceof Rectangle) {
@@ -224,7 +228,10 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		g2.draw(new Line2D.Double(x3, y3, x4, y4));
 	}
 	public void rotate(double angle){
+		
 		Shape s = collider.getColliderShape();
+		if(angle == s.getRotationAngle())
+			return;
 		if(s instanceof Rectangle)
 		((Rectangle)collider.getColliderShape()).rotate(angle);
 		else if (s instanceof Circle)
@@ -241,7 +248,8 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 			gameBehavior.update(g);
 		}
 		getCollider().updatePosition(Vector2d.mul(Time.timeScale,Vector2d.mul(Time.deltaTime,velocity)));
-		
+		System.out.println("rotatiionAngle"+collider.getColliderID()+":"+collider.getColliderShape().getRotationAngle());
+		//rotate(collider.getColliderShape().getRotationAngle()+1);
 	}
 
 	/**

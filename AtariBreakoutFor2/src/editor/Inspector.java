@@ -29,8 +29,10 @@ import math.Vector2d;
 public class Inspector extends JPanel implements KeyListener, ActionListener{
 	
 	GameObject gameObject; // The GameObject being inspected
-	JLabel xPositionLabel,yPositionLabel,positionLabel,scaleLabel,widthLabel,heightLabel,xVelocityLabel,yVelocityLabel,velocityLabel,massLabel;
-	JTextField xPosition,yPosition,nameLabel,widthField,heightField,xVelocityField,yVelocityField,massField;
+	JLabel xPositionLabel,yPositionLabel,positionLabel,scaleLabel,widthLabel,heightLabel,xVelocityLabel,yVelocityLabel,velocityLabel,massLabel,
+	rotationLabel;
+	JTextField xPosition,yPosition,nameLabel,widthField,heightField,xVelocityField,yVelocityField,massField,
+	rotationField;
 	MainEditor gamePanel;
 	JCheckBox isMovable,isTrigger,isDestroyed,destroyOnCollision;
 	boolean hide = true;
@@ -117,6 +119,16 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		xVelocityField.addActionListener(this);
 		yVelocityField.addActionListener(this);
 		
+		
+		rotationLabel = new JLabel("Rotation:");
+		rotationLabel.setForeground(Color.white);
+		rotationLabel.setFont(new Font(rotationLabel.getName(),Font.PLAIN,30));
+		
+		rotationField = new JTextField(5);
+		rotationField.setHorizontalAlignment(SwingConstants.LEFT);
+		rotationField.setActionCommand("rotation");
+		rotationField.addActionListener(this);
+		
 		isMovable = new JCheckBox("Is Movable");
 		isMovable.addItemListener(new ItemListener() {
 			
@@ -173,117 +185,143 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	public void addComponents(){
+		int y = 0;
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.NORTH;
 		c.weightx = 1;
 		c.weighty = 0;
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = y;
 		c.gridwidth = 4;
 		this.add(nameLabel,c);
-		c.gridy = 1;
+		y++;
+		c.gridy = y;
 		c.weighty = 0;
 		this.add(positionLabel,c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = y;
 		c.gridwidth = 1;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(xPositionLabel,c);
 		c.gridx = 1;
-		c.gridy = 2;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(xPosition,c);
 		c.gridx = 2;
-		c.gridy = 2;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(yPositionLabel,c);
 		c.gridx = 3;
-		c.gridy = 2;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(yPosition,c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(scaleLabel,c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(widthLabel, c);
+		y++;
 		c.gridx = 1;
-		c.gridy = 4;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(widthField, c);
 		c.gridx = 2;
-		c.gridy = 4;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(heightLabel, c);
 		c.gridx = 3;
-		c.gridy = 4;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(heightField, c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 5;
+		c.gridy = y;
+		c.weightx = 1;
+		c.weighty = 0;
+		this.add(rotationLabel,c);
+		y++;
+		c.gridx = 1;
+		c.gridy = y;
+		c.weightx = 1;
+		c.weighty = 0;
+		this.add(rotationField, c);
+		y++;
+		c.gridx = 0;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(velocityLabel,c);
+		y++; 
 		c.gridx = 0;
-		c.gridy = 6;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(xVelocityLabel, c);
+		System.out.println(y);
 		c.gridx = 1;
-		c.gridy = 6;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(xVelocityField, c);
 		c.gridx = 2;
-		c.gridy = 6;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(yVelocityLabel, c);
 		c.gridx = 3;
-		c.gridy = 6;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(yVelocityField, c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 7;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(massLabel, c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 8;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(massField, c);
-		
+		y++;
 		c.gridx = 0;
-		c.gridy = 9;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(isMovable, c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 10;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(isTrigger, c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 11;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(isDestroyed, c);
+		y++;
 		c.gridx = 0;
-		c.gridy = 12;
+		c.gridy = y;
 		c.weightx = 1;
 		c.weighty = 1;
 		this.add(destroyOnCollision, c);
@@ -314,7 +352,8 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		this.remove(isTrigger);
 		this.remove(isDestroyed);
 		this.remove(destroyOnCollision);
-		
+		this.remove(rotationField);
+		this.remove(rotationLabel);
 		revalidate();
 		repaint();
 	}
@@ -351,6 +390,9 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		isMovable.setSelected(g.isMovable());
 		isTrigger.setSelected(g.isTrigger());
 		destroyOnCollision.setSelected(g.isDestroyOnCollision());
+		double rotAng = g.getCollider().getColliderShape().getRotationAngle();
+		rotAng = Math.floor(rotAng * 100) / 100;
+		rotationField.setText(rotAng+"");
 		repaint();
 	}
 
@@ -424,9 +466,11 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 			double height = Double.parseDouble(heightField.getText().trim());
 			if(gameObject.getCollider().getColliderShape() instanceof Circle)
 			{
-				((Circle)gameObject.getCollider().getColliderShape()).setRadius(height/2);
+				Circle c = (Circle)gameObject.getCollider().getColliderShape();
+				c.setRadius(height/2);
 				gameObject.getCollider().getColliderShape().setShapeWidth(height);
 				gameObject.getCollider().getColliderShape().setShapeHeight(height);
+				c.rotate(c.getRotationAngle());
 				widthField.setText(height+"");
 				gamePanel.repaint();
 			}else if(gameObject.getCollider().getColliderShape() instanceof Rectangle){
@@ -456,6 +500,20 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 			gameObject.setMass(Double.parseDouble(massField.getText().trim()));
 			gamePanel.repaint();
 			repaint();
+		}
+		if(e.getActionCommand() == "rotation"){
+			double angle = Double.parseDouble(rotationField.getText().trim());
+			if(gameObject.getCollider().getColliderShape() instanceof Circle)
+			{
+				gameObject.getCollider().getColliderShape().rotate(angle);
+				rotationField.setText(angle+"");
+				gamePanel.repaint();
+			}else if(gameObject.getCollider().getColliderShape() instanceof Rectangle){
+			//gameObject.getCollider().getColliderShape().rotate(angle);
+			Rectangle r = ((Rectangle)gameObject.getCollider().getColliderShape());
+			r.rotate(angle);
+			gamePanel.repaint();
+			}
 		}
 	}
 }

@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 public class DemoScript1 implements GameBehavior{
 		public static int score = 0;
+		double angle = 0;
 			@Override
 			public void update(GameObject g) {
 				// TODO Auto-generated method stub
@@ -31,6 +32,8 @@ public class DemoScript1 implements GameBehavior{
 					
 				}
 				
+				g.rotate(g.getCollider().getColliderShape().getRotationAngle()+angle);
+				angle++;
 			}
 			public void createTail(GameObject g){
 				Thread t = new Thread(new Runnable() {

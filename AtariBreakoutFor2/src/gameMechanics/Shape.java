@@ -89,6 +89,16 @@ public class Shape implements Serializable{
 	 * @param angle in degrees
 	 */
 	public void rotate(double angle){
+		double prevAngle = this.rotationAngle;
+		//prevAngle = 0;
+		prevAngle = Math.toRadians(-prevAngle);
+		//double deltaAngle = -prevAngle;
+		//System.out.println("deltaAng"+deltaAngle);
+		for (int i = 0; i < points.size(); i++) {
+			Vector2d newPoint = Vector2d.rotatePointAroundAnotherPoint(points.get(i),referencePoint,prevAngle);
+			points.get(i).setX(newPoint.getX());
+			points.get(i).setY(newPoint.getY());
+		}
 		this.rotationAngle = angle;
 		angle = Math.toRadians(angle);
 		for (int i = 0; i < points.size(); i++) {
