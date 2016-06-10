@@ -50,6 +50,10 @@ import gameMechanics.Time;
 import gamePieces.*;
 import math.Vector2d;
 
+/**
+ * @author Ethan
+ * The MainEditor is the main JFrame/GUI that lets you create a game and edit your project
+ */
 public class MainEditor extends JPanel implements ActionListener, MouseListener, MouseMotionListener, KeyListener {
 	ArrayList<GameObject> gameObjects;
 	ArrayList<Shape> gameItems;
@@ -90,6 +94,10 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		// createGame();
 	}
 
+	
+	/** adds the JMenu to the JFrame
+	 * @param f the JFrame that the JMenu is added to.
+	 */
 	public void addJMenu(JFrame f) {
 		// Create the menu bar.
 		menuBar = new JMenuBar();
@@ -183,6 +191,10 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 
 	}
 
+	/** creates the panels i.e. the JMenu the Inspector and the Outliner, and adds
+	 * them to the JFrame
+	 * @param f the JFrame that is added to.
+	 */
 	public void createPanels(JFrame f) {
 
 		addJMenu(f);
@@ -197,6 +209,9 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 
 	}
 
+	/** adds the outliner to the JFrame
+	 * @param f the JFrame that is added to.
+	 */
 	public void addOutliner(JFrame f) {
 
 		outliner = new Outliner(this);
@@ -208,6 +223,9 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		f.add(outliner, BorderLayout.WEST);
 	}
 
+	/** adds the Inspector to the JFrame
+	 * @param f the JFrame that is added to.
+	 */
 	public void addInspector(JFrame f) {
 
 		// f.addKeyListener(this);
@@ -224,6 +242,10 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 
 	Game g;
 
+	
+	/**
+	 * Creates the Game. 
+	 */
 	public void createGame() {
 
 		// System.out.println("gameObjects");
@@ -234,6 +256,9 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		// g.createGameObjects();
 	}
 
+	/**
+	 *  Creates the MainEditor and all of its GUI.
+	 */
 	public void createGUI() {
 		MainEditor m = this;
 		JFrame frame = new JFrame("Jexotic2D");
@@ -250,14 +275,6 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		frame.setVisible(true);
 	}
 
-	/*
-	 * public static void main(String[] args) { MainEditor m = new MainEditor();
-	 * JFrame frame = new JFrame("Jexotic2D"); frame.add(m);
-	 * m.createPanels(frame); JPanel topPanel = new JPanel(); JButton playButton
-	 * = new JButton("Play"); playButton.setActionCommand("play");
-	 * playButton.addActionListener(m); topPanel.add(playButton);
-	 * frame.add(topPanel,BorderLayout.NORTH); frame.setVisible(true); }
-	 */
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -287,6 +304,10 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		}
 	}
 
+	/**
+	 * adds a GameObject with a Circle Shape in its Collider at a random position, with 
+	 * a random Velocity and a random Mass. 
+	 */
 	public void addCircle() {
 		Vector2d position = new Vector2d(Math.random() * 500 + 200, Math.random() * 500 + 50);
 		double radius = 15;
@@ -311,7 +332,11 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		// gameItems.add(circleShape);
 		// System.out.println(gameObjects);
 	}
-
+	
+	/**
+	 * adds a GameObject with a Rectangle Shape in its Collider at a random position, with 
+	 * a random Velocity and a random Mass. 
+	 */
 	public void addRectangle() {
 		Vector2d position = new Vector2d(Math.random() * 500 + 200, Math.random() * 500 + 50);
 		// double radius = 20;
@@ -364,6 +389,11 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		}
 	}
 
+	
+	/** Checks if the Mouse is ontop/within a GameObject
+	 * @param e the MouseEvent of the current mouse
+	 * @return if it is found to be within it returns true. else returns false
+	 */
 	public boolean checkIfMouseIsWithinAGameObject(MouseEvent e) {
 		boolean detected = false;
 		for (int i = 0; i < gameObjects.size(); i++) {

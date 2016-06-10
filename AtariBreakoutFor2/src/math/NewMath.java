@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 public class NewMath {
 
+	/**
+	 * @param arr double[] array to search through
+	 * @return the minimum double value in double array
+	 * @throws Exception
+	 */
 	public static double min(double[] arr) throws Exception {
 		if (arr.length != 0) {
 			double small = arr[0];
@@ -19,6 +24,11 @@ public class NewMath {
 		}
 	}
 
+	/**
+	 * @param p Vector2d point
+	 * @param l ArrayList<Vector2d) line consisting of at least two points
+	 * @return the distance between a point (p) and line (l)
+	 */
 	public static double calculateDistanceOfPointToLine(Vector2d p, ArrayList<Vector2d> l) {
 
 		double[] abc = calculateEquationOfLine(l);

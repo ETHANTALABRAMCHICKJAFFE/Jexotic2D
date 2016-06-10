@@ -38,6 +38,12 @@ import gameMechanics.Square;
 import gameMechanics.Time;
 import math.Vector2d;
 
+/**
+ * @author Ethan
+ * GameObject, anything that runs in the Game is a GameObject. It represents an Object
+ * that the engine know how to run Physics and calculations on. It combines all
+ * the features into one Object that it is used to execute gameplay.
+ */
 public class GameObject extends PhysicsObject implements GameBehavior,Serializable{
 
 	/**
@@ -51,6 +57,7 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	private String tag = "Default",name = "gameObject";
 	transient private ArrayList<GameBehavior> scripts;
 	private ArrayList<String> scriptsPaths;
+
 	public GameObject(Vector2d position, Vector2d velocity, double mass, Color c,Collider collider) {
 		super(position, velocity, mass);
 		color = c;
@@ -90,11 +97,20 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		awake(this);
 	}
 
+	
+	/** adds a script to the scripts ArrayList
+	 * @param script the instance to add.
+	 * @param scriptPath the location path of the script.
+	 */
 	public void addScript(GameBehavior script,String scriptPath){
 		scripts.add(script);
 		scriptsPaths.add(scriptPath);
 	}
 	
+	@Deprecated
+	/** adds a script from a file in the file system.
+	 * @param scriptName
+	 */
 	public void addScriptFromFile(String scriptName){
 		try{
 			// Save source in .java file.
@@ -129,8 +145,8 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	}
 
 	/**
-	 * this is the correct one
-	 * @param scriptname
+	 * adds a script from a file in the file system.
+	 * @param scriptname the name of the script
 	 */
 	public void addScriptFile(String scriptname){
 		try{
@@ -207,6 +223,10 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		g2.dispose();
 	}
 
+	/** draws the collider
+	 * @param collider the shape of the collider to draw
+	 * @param g2 the Graphics2D
+	 */
 	public void drawClosedShape(Shape collider,Graphics2D g2){
 		ArrayList<Vector2d> newPoints = null;
 		newPoints = collider.getPoints();
@@ -227,6 +247,10 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		double y4 = collider.getPoints().get(collider.getPoints().size() - 1).getY();
 		g2.draw(new Line2D.Double(x3, y3, x4, y4));
 	}
+	
+	/** rotate the GameObject
+	 * @param angle the angle in degrees to rotate
+	 */
 	public void rotate(double angle){
 		
 		Shape s = collider.getColliderShape();
@@ -239,6 +263,7 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		else
 			collider.getColliderShape().rotate(angle);
 	}
+	
 	
 	@Override
 	public void update(GameObject g) {

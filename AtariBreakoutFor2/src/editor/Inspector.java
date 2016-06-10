@@ -26,6 +26,10 @@ import gameMechanics.Rectangle;
 import gamePieces.GameObject;
 import math.Vector2d;
 
+/**
+ * @author Ethan
+ * The inspector is the panel that displays the selected GameObject's information.
+ */
 public class Inspector extends JPanel implements KeyListener, ActionListener{
 	
 	GameObject gameObject; // The GameObject being inspected
@@ -36,6 +40,7 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 	MainEditor gamePanel;
 	JCheckBox isMovable,isTrigger,isDestroyed,destroyOnCollision;
 	boolean hide = true;
+	
 	public Inspector(MainEditor e){
 		super();
 		
@@ -184,6 +189,10 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		
 	}
 	
+	
+	/**
+	 * adds all the components that display the information on the selected GameObject. 
+	 */
 	public void addComponents(){
 		int y = 0;
 		GridBagConstraints c = new GridBagConstraints();
@@ -329,6 +338,10 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		revalidate();
 		repaint();
 	}
+	
+	/**
+	 * removes all the components that display the information on the selected GameObject. 
+	 */
 	public void removeComponents(){
 		this.remove(nameLabel);
 		this.remove(positionLabel);
@@ -358,6 +371,10 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		repaint();
 	}
 	
+	
+	/** sets the current selected GameObject
+	 * @param g the GameObject that is set to.
+	 */
 	public void setGameObject(GameObject g){
 		gameObject = g;
 		//position.setText(g.getPosition().toString());
@@ -366,6 +383,9 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		//showElements();
 	}
 	
+	/** updates the values of the selected GameObject.
+	 * @param g the selected GameObject
+	 */
 	public void updateValues(GameObject g){
 		double x = g.getPosition().getX();
 		x = Math.floor(x * 100) / 100;

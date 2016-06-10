@@ -24,6 +24,10 @@ import javax.swing.event.ListSelectionListener;
 
 import gamePieces.GameObject;
 
+/**
+ * @author Ethan
+ * The Outliner is the panel that displays the current project's GameObject list.
+ */
 public class Outliner extends JPanel implements ActionListener,KeyListener{
 //todo a class that displays all current gameObjects
 	JScrollPane objectList;
@@ -103,6 +107,10 @@ public class Outliner extends JPanel implements ActionListener,KeyListener{
 	}
 	
 	
+	/**
+	 * if the keyEvent is delete key, it deletes the selected GameObject, by removing it from the ArrayList
+	 * @param e the Keyevent that was pressed
+	 */
 	public void deleteGameObjectOnKeyPress(KeyEvent e){
 		System.out.println("delg");
 		if(e.getKeyCode() == KeyEvent.VK_DELETE){
@@ -134,6 +142,10 @@ public class Outliner extends JPanel implements ActionListener,KeyListener{
 			repaint();
 		}
 	}
+	
+	/** updates the selected item in the list in the panel
+	 * @param g the gameObject that is selected
+	 */
 	public void updateSelected(GameObject g){
 		String name = g.getName();
 		for (int i = 0; i < gameObjects.size(); i++) {
@@ -152,38 +164,44 @@ public class Outliner extends JPanel implements ActionListener,KeyListener{
 				
 		}
 	}
+	
+	/** adds a GameObject to the list
+	 * @param g the GameObject that is added.
+	 */
 	public void addGameObject(GameObject g){
 		gameObjects.add(g);
 		selectedObject = g;
 		
 	}
 	
+	/**
+	 * Removes the buttons from the panel 
+	 */
 	public void removeButtons(){
 		for (int i = 0; i < buttons.size(); i++) {
 			buttonPanel.remove(buttons.get(i));
 		}
 		buttons.clear();
 	}
+	
+	
+	/**
+	 * Creates the buttons and adds them to the panel. 
+	 */
 	public void createButtons(){
-//		String[] values = new String[gameObjects.size()];
-//		for (int i = 0; i < gameObjects.size(); i++) {
-//			GameObject g = gameObjects.get(i);
-//			values[i] = g.getName();
-//		}
-//		System.out.println(values);
-//		buttonsList = new JList<String>(values);
-		
 	listModel.clear();
 		for (int i=0; i<gameObjects.size(); i++) {
 		  listModel.addElement(gameObjects.get(i).getName());
 		}
-//		buttonsList=new JList(listModel);
 		buttonsList.repaint();
 		objectList.repaint();
 		repaint();
 		
 	}
 	
+	/**
+	 * @return the selected object in the list
+	 */
 	public GameObject getSelectedObject(){
 		return selectedObject;
 	}
@@ -206,10 +224,18 @@ public class Outliner extends JPanel implements ActionListener,KeyListener{
 		}
 		
 	}
+	
+	/** updates the buttons look
+	 * @param b the JButton to update
+	 */
 	public void updateClickedButton(JButton b){
 		b.setForeground(Color.white);
 		b.setBackground(Color.gray);
 	}
+	
+	/** update the buttons look
+	 * @param b the JButton to update
+	 */
 	public void updateNotClickedButton(JButton b){
 		b.setForeground(Color.black);
 		b.setBackground(Color.lightGray);
@@ -217,23 +243,13 @@ public class Outliner extends JPanel implements ActionListener,KeyListener{
 
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("pressed");
-		//deleteGameObjectOnKeyPress(e);
-	}
+	public void keyPressed(KeyEvent e) {}
 
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyReleased(KeyEvent arg0) {}
 
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent arg0) {}
 }

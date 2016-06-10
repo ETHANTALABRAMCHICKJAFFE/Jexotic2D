@@ -33,10 +33,23 @@ public class Vector2d implements Serializable{
 		return d;
 	}
 	
+	/**
+	 * transition between two Vector2d values.
+	 * @param point1 the starting Vector2d
+	 * @param point2 the ending Vector2d
+	 * @param the amount to transition
+	 * @return the Vector2d transitioned alpha amount from point1 to point2
+	 */
 	public Vector2d lerp(Vector2d point1, Vector2d point2, float alpha)
 	{
 	    return add(point1,mul(alpha,(sub(point2,point1))));
 	}
+	
+	/** 
+	 * @param position the center position of the {@link gameMechanics.Shape}
+	 * @param collider the Collider that its position we're trying to convert
+	 * @return the corrected position from center to top-left corner (like java graphics requires)
+	 */
 	public Vector2d convertToJavaGraphicsPosition(Vector2d position,Collider collider){
 		if(collider.getColliderShape() instanceof Circle){
 		double x = position.getX()+((Circle)collider.getColliderShape()).getRadius();
@@ -51,26 +64,37 @@ public class Vector2d implements Serializable{
 		return position;
 	}
 	
+	@Deprecated
 	public boolean checkIfPointIsOnLeftSideOfLine(Vector2d startPoint,Vector2d endPoint,Vector2d p){
 		
 		double n = Math.sin((endPoint.getX() - startPoint.getX()) * (p.getY() - startPoint.getY()) - (endPoint.y - startPoint.y) * (p.x - startPoint.x));
 		return (n < 0);
 	}
 	
+	/** 
+	 * @param startPoint startPoint of line
+	 * @param endPoint endPoint of line
+	 * @param p start point of normal
+	 * @return the point where the normal of a point to a line meet
+	 */
 	public static Vector2d findPointThatNormalOfAPointToALineMeet(Vector2d startPoint,Vector2d endPoint,Vector2d p){
 		Vector2d d = sub(endPoint,startPoint).normalized();
 			Vector2d x = add(mul(dotProduct(sub(p,startPoint),d),d),startPoint);
 			return x;
 	}
+
+	/** 
+	 * @param normal the normal direction vector that is used to reflect.
+	 * @return the reflected vector direction according to a normal direction vector.
+	 */
 	public Vector2d reflect(Vector2d normal){
-//		Vector2d d = this;
-//		Vector2d n = normal;
-//		double lengthN =n.length();
-//		lengthN *= lengthN;
-//		double dXn = dotProduct(d, n);
-//		return add(d,div(lengthN,mul(-2*dXn,n)));
 		return add(mul(-2*dotProduct(normal.normalized(), this),normal.normalized()), this);
 	}
+	
+	/**
+	 * @return the normalized vector: i.e. the vector with it's x,y parameters each divided by its
+	 * length.
+	 */
 	public Vector2d normalized(){
 		double length = length();
 		if(length == 0)
@@ -80,18 +104,29 @@ public class Vector2d implements Serializable{
 		
 		return new Vector2d(x,y);
 	}
+	
+	/**
+	 * @return the length of the vector i.e. its magnitude.
+	 */
 	public double length(){
 		return Math.sqrt(this.x*this.x+this.y*this.y);
 	}
+	
+	/**
+	 * @param v the vector to rotate
+	 * @param theta the angle to rotate in radians
+	 * @return the rotated vector
+	 */
 	public static Vector2d rotate(Vector2d v, double theta){
 		//theta = -theta;
 		double x2 = Math.cos(theta)*v.getX() - Math.sin(theta)*v.getY();
 		double y2 = Math.sin(theta)*v.getX() + Math.cos(theta)*v.getY();
 		return new Vector2d(x2,y2);
 	}
+	
 	/**
-	 * @param v1
-	 * @param v2
+	 * @param v1 Vector2d
+	 * @param v2 Vector2d
 	 * @return the dot product between vectors v1 and v2
 	 */
 	public static double dotProduct(Vector2d v1, Vector2d v2){
@@ -100,31 +135,25 @@ public class Vector2d implements Serializable{
 	
 	/**
 	 * 
-	 * @param v
+	 * @param v Vector2d
 	 * @return return the vector that is perpendicular to this vector 
 	 */
 	public static Vector2d getNormalOfVector(Vector2d v){
-		//System.out.println("tangent"+v.normalized());
-	//	double length = v.length();
-		//Vector2d tangentV = div(1/length, v);
-		//double tangentLength = tangentV.length();
-		//System.out.println("tangentV"+tangentV);
-		//Vector2d normalizedV = v.normalized();
-		//double normvlength = normalizedV.length();
-		//System.out.println("1/normvlength"+1/normvlength);
-		//Vector2d normal = mul(1/tangentLength,tangentV);
-		//return normal;
 		return new Vector2d(-v.y,v.x);
 	}
 	
 	/**
-	 * 
 	 * @return this vector's length value
 	 */
 	public double getLength(){
 		return Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
 	}
 	
+	/**
+	 * @param p1 the point to rotate.
+	 * @param center the center point to rotate around.
+	 * @return rotates a point to 0 degrees around the center point.
+	 */
 	public static Vector2d resetRotationOfPointAroundAnotherPoint(Vector2d p1,Vector2d center){
 		//TRANSLATE TO ORIGIN
 				double x1 = p1.getX() - center.x;
@@ -137,6 +166,14 @@ public class Vector2d implements Serializable{
 				//TRANSLATE BACK
 				return new Vector2d(temp_x1 + center.x, temp_y1 + center.y);
 	}
+	
+	
+	/**
+	 * @param p1 the point to rotate.
+	 * @param center the point to rotate p1 around
+	 * @param angle rotation angle in radians
+	 * @return rotates a point according to angle around the center point.
+	 */
 	public static Vector2d rotatePointAroundAnotherPoint(Vector2d p1,Vector2d center,double angle){
 		//angle = -angle;
 		
@@ -158,10 +195,11 @@ public class Vector2d implements Serializable{
 		double newY = center.y + (p1.x-center.x)*Math.sin(angle) + (p1.y-center.y)*Math.cos(angle);
 		return new Vector2d(newX,newY);*/
 	}
+
 	/**
 	 * 
-	 * @param v1
-	 * @param v2
+	 * @param v1 Vector2d
+	 * @param v2 Vector2d
 	 * @return angle in radians between two vectors
 	 */
 	public static double angleBetweenTwoVector2ds(Vector2d v1, Vector2d v2){
@@ -171,8 +209,8 @@ public class Vector2d implements Serializable{
 	
 	/**
 	 * 
-	 * @param n
-	 * @param v
+	 * @param n double
+	 * @param v Vector2d
 	 * @return a vector with the values of v times the number n
 	 */
 	public static Vector2d mul(double n, Vector2d v){
@@ -183,9 +221,8 @@ public class Vector2d implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @param n
-	 * @param v
+	 * @param n double
+	 * @param v Vector2d
 	 * @return a vector with the values of v divided the number n
 	 */
 	public static Vector2d div(double n, Vector2d v){
@@ -206,7 +243,6 @@ public class Vector2d implements Serializable{
 	}
 	
 	/**
-	 * 
 	 * @param v1
 	 * @param v2
 	 * @return a vector with values that are equal to the added values of each vector by the other

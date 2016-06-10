@@ -34,6 +34,11 @@ import javax.swing.event.ListSelectionListener;
 
 import gamePieces.GameObject;
 
+/**
+ * @author Ethan
+ * The ProjectManager is the class that opens a window that allows you to create and open new/existing
+ * projects, load their information and open the MainEditor.
+ */
 public class ProjectManager {
 
 	public static String projectDirectory = "demo1";
@@ -43,6 +48,7 @@ public class ProjectManager {
 	JScrollPane objectList;
 	JFrame f;
 	JButton createProject, openProject;
+
 
 	public ProjectManager() {
 
@@ -126,6 +132,10 @@ public class ProjectManager {
 		// createProject("Demo1");
 	}
 
+	
+	/**
+	 * Finds all the projects that are within the C:\\Jexotic2D Projects folder.
+	 */
 	public void findAllProjects() {
 		File file = new File("C:\\Jexotic2D Projects");
 		String[] names = file.list();
@@ -137,6 +147,10 @@ public class ProjectManager {
 		}
 	}
 
+	/**
+	 * saves the project's current state and GameObject ArrayList.
+	 * @param m the MainEditor
+	 */
 	public static void saveProject(MainEditor m) {
 
 		ObjectOutputStream out;
@@ -156,6 +170,10 @@ public class ProjectManager {
 
 	}
 
+	/**
+	 * Loads the GameObject list of existing project saved in the file system.
+	 * @param dir
+	 */
 	public static void loadProject(String dir) {
 		ArrayList<GameObject> g = null;
 		try {
@@ -189,6 +207,10 @@ public class ProjectManager {
 		}
 	}
 
+	
+	/**
+	 * Creates the projects folder. 
+	 */
 	public static void createProjectsFolder() {
 		Path projectsFolder = Paths.get("C:\\Jexotic2D Projects");
 		if (!Files.exists(projectsFolder)) {
@@ -201,6 +223,10 @@ public class ProjectManager {
 		}
 	}
 
+	/**
+	 * Creates a new Project.
+	 * @param name the name of the new project.
+	 */
 	public static void createProject(String name) {
 
 		Path path = Paths.get("C:\\Jexotic2D Projects\\" + name);

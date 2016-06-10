@@ -25,6 +25,10 @@ import gameMechanics.Shape;
 import gameMechanics.Time;
 import math.Vector2d;
 
+/**
+ * @author Ethan
+ * The Game when it is playing.
+ */
 public class Game extends JPanel implements Runnable,KeyListener{
 	GameObject padle;
 	public ArrayList<GameObject> gameObjects;
@@ -33,11 +37,11 @@ public class Game extends JPanel implements Runnable,KeyListener{
 	protected boolean endThread = false;
 	JFrame f;
 	
+	/** copies all the GameObject parameters into the class's GameObject ArrayList
+	 * @param gameObjectList
+	 * @return the new ArrayList with all of the copied values.
+	 */
 	public ArrayList<GameObject> copyGameObjects(ArrayList<GameObject> gameObjectList){
-//		if(this.gameObjectList == null)
-//		gameObjectList = new ArrayList<GameObject>();
-//		if(!gameObjectList.isEmpty())
-//			gameObjectList.clear();
 		ArrayList<GameObject> newGameObjects = new ArrayList<GameObject>();
 		for (int i = 0; i < gameObjectList.size();i++) {
 //			System.out.println("in");
@@ -53,6 +57,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 		//System.out.println("newgsdfsd"+newGameObjects);
 		return newGameObjects;
 	}
+	
 	public Game(ArrayList<GameObject> gameObjects) {
 		Input input = new Input();
 		GameManager gm = new GameManager(this);
@@ -120,9 +125,10 @@ public class Game extends JPanel implements Runnable,KeyListener{
 		f.setVisible(true);
 	}
 	
-	public void startGameObjects(){
-		
-	}
+	
+	/**
+	 *  Terminates all of the Threads
+	 */
 	public void terminate() {
 		GameManager.terminate();
 		Time.terminate();
@@ -130,6 +136,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 		endThread = true;
 	}
 
+	@Deprecated
 	public void createWalls() {
 		Rectangle topWallShape =  (new Rectangle(new Vector2d(800, 5), 15, 2000, 750));
 		Collider topWallCollider = new Collider(topWallShape, 2);
@@ -182,6 +189,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 
 	}
 
+	@Deprecated
 	public void createBall() {
 
 		Circle colliderShape = (new Circle(60, 360, new Vector2d(600, 600)));
@@ -210,6 +218,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 		}
 	}
 
+	@Deprecated
 	public void createPaddle() {
 		Rectangle colliderShape2 =  (new Rectangle(new Vector2d(600, 700), 25, 300, 750));
 		Collider gc2 = new Collider(colliderShape2, 1);
@@ -225,7 +234,8 @@ public class Game extends JPanel implements Runnable,KeyListener{
 		padle = g2;
 
 	}
-
+	
+	@Deprecated
 	public void createBricks() {
 		for (int i = 0; i < 10; i++) {
 			for(int j = 0; j<4;j++){
@@ -246,6 +256,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
 		}
 	}
 
+	@Deprecated
 	public void createGameObjects() {
 
 		createWalls();
@@ -274,6 +285,10 @@ public class Game extends JPanel implements Runnable,KeyListener{
 	}
 	
 
+	
+	/** adds to the ArrayList 
+	 * @param g the GameObject to add
+	 */
 	public void addGameObject(GameObject g){
 		gameObjects.add(g);
 	}
@@ -312,9 +327,6 @@ public class Game extends JPanel implements Runnable,KeyListener{
 		}
 	}
 
-//	public static void main(String[] args) {
-//		Game g = new Game(null);
-//	}
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
