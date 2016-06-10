@@ -43,6 +43,12 @@ public class NewMath {
 		return dis;
 	}
 
+	/**
+	 * @param lineStartPoint start point of line
+	 * @param lineEndPoint endpoint of line
+	 * @param P the Vector2d point 
+	 * @return the distance between 
+	 */
 	public static double disPointToLine(Vector2d lineStartPoint, Vector2d lineEndPoint, Vector2d P) {
 		double normalLength = Math.sqrt((lineEndPoint.getX() - lineStartPoint.getX())
 				* (lineEndPoint.getX() - lineStartPoint.getX())
@@ -53,6 +59,11 @@ public class NewMath {
 				/ normalLength;
 	}
 
+	/**
+	 * @param point
+	 * @param l ArrayList<Vector2d) line consisting of at least two points
+	 * @return the distance between a point and line (l)
+	 */
 	public static double distanceBetweenPointAndLine(Vector2d point, ArrayList<Vector2d> l) {
 		double x0 = point.getX(), y0 = point.getY();
 		double y1, x1, y2, x2;
@@ -79,10 +90,18 @@ public class NewMath {
 
 	}
 
+	/**
+	 * @param val the value to clamp
+	 * @param min minimum value
+	 * @param max maximum value
+	 * @return the value that is between min and max (inclusive)
+	 */
 	public static double clamp(double val, double min, double max) {
 		return Math.max(min, Math.min(max, val));
 	}
 
+	
+	@Deprecated
 	public static double[] calculateEquationOfLine(ArrayList<Vector2d> l) {
 		// y-y1 = m(x-x1);
 		Vector2d startPoint = l.get(0), endPoint = l.get(l.size() - 1);
