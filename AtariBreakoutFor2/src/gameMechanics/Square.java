@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import math.Vector2d;
 
+@Deprecated
 public class Square extends Rectangle {
 
 	private double lengthOfSide;

@@ -1,5 +1,10 @@
 package gameMechanics;
 
+/**
+ * @author Ethan
+ * the class helps keep time, it includes parameter that you could use to control the 
+ * speed of animation in the Game ( using the {@link #timeScale})
+ */
 public class Time implements Runnable{
 
 	public static double timeScale = 1, deltaTime = 1,timeSinceStart = 0;

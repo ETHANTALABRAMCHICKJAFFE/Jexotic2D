@@ -7,6 +7,10 @@ import javax.tools.ToolProvider;
 import math.NewMath;
 import math.Vector2d;
 
+/**
+ * @author Ethan
+ * the Rectangle shape that extends {@link Shape}
+ */
 public class Rectangle extends Shape {
 
 	/**
@@ -77,6 +81,9 @@ public class Rectangle extends Shape {
 		this.rotationAngle = r.rotationAngle;
 	}
 
+	/**
+	 * @return {@link Rectangle#numOfPoints}
+	 */
 	public int getNumOfPoints() {
 		return numOfPoints;
 	}
@@ -94,32 +101,16 @@ public class Rectangle extends Shape {
 		return Vector2d.add(referencePoint, new Vector2d(-lengthOfSideB / 2, -lengthOfSideA / 2));
 	}
 
+	/** calculates all the {@link Vector2d}'s that represent the sides of the rectangle, using
+	 * their four cornerpoint {@link Vector2d}s.
+	 * @param r the {@link Rectangle} in mind
+	 */
 	public static void calculateSides(Rectangle r) {
 		r.topSide = new ArrayList<Vector2d>();
 		r.rightSide = new ArrayList<Vector2d>();
 		r.bottomSide = new ArrayList<Vector2d>();
 		r.leftSide = new ArrayList<Vector2d>();
-		// r.topSide.clear();
-		// r.rightSide.clear();
-		// r.bottomSide.clear();
-		// r.leftSide.clear();
-		// for(int i = 0; i< r.numOfPoints+1;i++){
-		// if(r.points.size() > i)
-		// r.topSide.add(r.points.get(i));
-		// }
-		// for(int i = r.numOfPoints+1; i< r.numOfPoints*2+2;i++){
-		// if(r.points.size() > i)
-		// r.rightSide.add(r.points.get(i));
-		// }
-		// for(int i = r.numOfPoints*2+2; i< r.numOfPoints*3+3;i++){
-		// if(r.points.size() > i)
-		// r.bottomSide.add(r.points.get(i));
-		// }
-		// for(int i = r.numOfPoints*3+3; i< r.points.size();i++){
-		// if(r.points.size() > i)
-		// r.leftSide.add(r.points.get(i));
-		// }
-
+		
 		Vector2d topLeftPoint = new Vector2d(
 				Vector2d.add(r.referencePoint, new Vector2d(-r.lengthOfSideB / 2, -r.lengthOfSideA / 2)));
 		Vector2d topRightPoint = new Vector2d(
@@ -149,6 +140,7 @@ public class Rectangle extends Shape {
 		r.leftSideVector = Vector2d.sub(topLeftPoint, bottomLeftPoint);
 	}
 
+	@Deprecated
 	public Vector2d returnSideOfRectangleWithPointIndex(int i) {
 		if (i < numOfPoints + 1) {
 			return topSideVector;
@@ -162,14 +154,13 @@ public class Rectangle extends Shape {
 	}
 
 	/**
-	 * calculates the points of the rectangle according to the referencePoint,
+	 * calculates the {@link Vector2d} points of the {@link Rectangle} according to the {@link Vector2d} referencePoint,
 	 * the lengths of each side
-	 * 
-	 * @param lengthOfSideA
-	 * @param lengthOfSideB
-	 * @param referencePoint
+	 * @param lengthOfSideA represents the height
+	 * @param lengthOfSideB represents the width
+	 * @param referencePoint the {@link Vector2d} center point
 	 * @param numOfPoints
-	 * @return
+	 * @return the {@link Vector2d} points of the {@link Rectangle}
 	 */
 	public static ArrayList<Vector2d> calculateRectanglePoints(double lengthOfSideA, double lengthOfSideB,
 			Vector2d referencePoint, int numOfPoints) {
@@ -185,61 +176,48 @@ public class Rectangle extends Shape {
 				Vector2d.add(referencePoint, new Vector2d(lengthOfSideB / 2, lengthOfSideA / 2)));
 
 		points.add(topLeftPoint);
-		// points from topLeft to topRight
-		// for (int i = 0; i < numOfPoints; i++) {
-		// Vector2d newPoint = new Vector2d(topLeftPoint.getX() + lengthOfSideB
-		// / numOfPoints * i,
-		// topLeftPoint.getY());
-		// points.add(newPoint);
-		// }
 
 		points.add(topRightPoint);
 
-		// points from topRight to bottomRight
-		// for (int i = 0; i < numOfPoints; i++) {
-		// Vector2d newPoint = new Vector2d(topRightPoint.getX(),
-		// topRightPoint.getY() + lengthOfSideA / numOfPoints * i);
-		// points.add(newPoint);
-		// }
-
 		points.add(bottomRightPoint);
-		// points from bottomRight to bottomLeft
-		// for (int i = 0; i < numOfPoints; i++) {
-		// Vector2d newPoint = new Vector2d(bottomRightPoint.getX() -
-		// lengthOfSideB / numOfPoints * i,
-		// bottomLeftPoint.getY());
-		// points.add(newPoint);
-		// }
-
+		
 		points.add(bottomLeftPoint);
-
-		// points from bottomLeft to topLeft
-		// for (int i = 0; i < numOfPoints; i++) {
-		// Vector2d newPoint = new Vector2d(bottomLeftPoint.getX(),
-		// bottomLeftPoint.getY() - lengthOfSideA / numOfPoints * i);
-		// points.add(newPoint);
-		// }
 
 		return points;
 	}
 
+	/**
+	 * @return {@link Rectangle#lengthOfSideA}
+	 */
 	public double getLengthOfSideA() {
 		return lengthOfSideA;
 	}
-
+	
+	/**
+	 * @param length the height to set
+	 */
 	public void setLengthOfSideA(double length) {
 		lengthOfSideA = length;
 	}
 
+	/**
+	 * @param length the width to set
+	 */
 	public void setLengthOfSideB(double length) {
 		lengthOfSideB = length;
 	}
-
+	/**
+	 * @return {@link Rectangle#lengthOfSideB}
+	 */
 	public double getLengthOfSideB() {
 		return lengthOfSideB;
 	}
 
 	int ijk = 0;
+	/** rotates the {@link Rectangle} {@link Vector2d} corner points
+	 * @param prevAngle the previous angle in degrees
+	 * @param angle the angle to rotate in degrees
+	 */
 	public void rotateCorners(double prevAngle,double angle) {
 		
 
@@ -261,6 +239,7 @@ public class Rectangle extends Shape {
 		//System.out.println(this.referencePoint+"bottomrightpoint2"+bottomRightPoint);
 	}
 
+	@Override
 	public void rotate(double angle) {
 		double prevAngle = this.rotationAngle;
 		super.rotate(angle);
@@ -272,7 +251,7 @@ public class Rectangle extends Shape {
 	/**
 	 * returns the position to prevent from Collider to be inside the rectangle
 	 * 
-	 * @param c
+	 * @param c The {@link Collider}
 	 */
 	public Vector2d returnCornerPositionCorrection(Collider c) {
 		Shape s = c.getColliderShape();
@@ -452,30 +431,14 @@ public class Rectangle extends Shape {
 		return null;
 	}
 
+	/**
+	 *  calculates the normalized {@link Vector2d} direction of each corner.
+	 */
 	public void calculateNormalizedDirectionOfEachCorner() {
 		Vector2d leftBottomToTopDirection = Vector2d.sub(topLeftPoint, bottomLeftPoint);
 		Vector2d topLeftToRightDirection = Vector2d.sub(topRightPoint, topLeftPoint);
 		Vector2d rightBottomToTopDirection = Vector2d.sub(topRightPoint, bottomRightPoint);
 		Vector2d bottomRightToLeftDirection = Vector2d.sub(bottomLeftPoint, bottomRightPoint);
-
-		//System.out.println("topLeftPont"+topLeftPoint+", toprightp"+topRightPoint+"toplefttorightdir"+topLeftToRightDirection+"leftBottomToTopDirection"+leftBottomToTopDirection);
-//		Vector2d topLeftCorner = Vector2d.add(Vector2d.mul(-1, topLeftToRightDirection).normalized(),
-//				leftBottomToTopDirection.normalized());
-//		Vector2d topRightCorner = Vector2d.add(topLeftToRightDirection.normalized(),
-//				rightBottomToTopDirection.normalized());
-//		Vector2d bottomLeftCorner = Vector2d.add(Vector2d.mul(-1, leftBottomToTopDirection).normalized(),
-//				bottomRightToLeftDirection.normalized());
-//		Vector2d bottomRightCorner = Vector2d.add(Vector2d.mul(-1, rightBottomToTopDirection).normalized(),
-//				Vector2d.mul(-1, bottomRightToLeftDirection.normalized()));
-
-//		Vector2d topLeftCorner = Vector2d.add(Vector2d.mul(-1, topLeftToRightDirection).normalized(),
-//				rightBottomToTopDirection.normalized());
-//		Vector2d topRightCorner = Vector2d.add(topLeftToRightDirection.normalized(),
-//				leftBottomToTopDirection.normalized());
-//		Vector2d bottomLeftCorner = Vector2d.add(Vector2d.mul(-1, leftBottomToTopDirection).normalized(),
-//				Vector2d.mul(-1,topLeftToRightDirection).normalized());
-//		Vector2d bottomRightCorner = Vector2d.add(topLeftToRightDirection.normalized(),
-//				Vector2d.mul(-1, rightBottomToTopDirection.normalized()));
 
 		double da = Vector2d.findDistanceBetweenTwoVector2ds(topLeftPoint, topRightPoint);
 		double db = Vector2d.findDistanceBetweenTwoVector2ds(topLeftPoint, bottomLeftPoint);
@@ -488,18 +451,7 @@ public class Rectangle extends Shape {
 		Vector2d bottomLeftCorner = Vector2d.add(bottomVector, new Vector2d(-leftVector.getX(),-leftVector.getY())).normalized();
 		Vector2d topRightCorner = Vector2d.add(rightVector, new Vector2d(-topVector.getX(),-topVector.getY())).normalized();
 		Vector2d bottomRightCorner = Vector2d.add(bottomVector, new Vector2d(-rightVector.getX(),-rightVector.getY())).normalized();
-		//Vector2d topLeftCorner = Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(1,Vector2d.sub(topLeftPoint, topRightPoint).normalized()),topLeftPoint),topLeftPoint,Math.toRadians(-45)).normalized(); 
-		//Vector2d topLeftCorner = Vector2d.sub(Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(-1, topLeftToRightDirection).normalized(),topLeftPoint), topLeftPoint, Math.toRadians(-45)),topLeftPoint).normalized();
-		//Vector2d topRightCorner = Vector2d.sub(Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(1, topLeftToRightDirection).normalized(),topRightPoint), topRightPoint, Math.toRadians(-45)),topRightPoint).normalized();
-		//Vector2d bottomLeftCorner = Vector2d.sub(Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(1, bottomRightToLeftDirection).normalized(),bottomLeftPoint), bottomLeftPoint, Math.toRadians(-45)),bottomLeftPoint).normalized();
-//		Vector2d bottomRightCorner = Vector2d.sub(Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(-1, bottomRightToLeftDirection).normalized(),bottomRightPoint), bottomRightPoint, Math.toRadians(-45)),bottomRightPoint).normalized();
 
-//		Vector2d topLeftCorner = Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(-1, topLeftToRightDirection).normalized(),topLeftPoint), topLeftPoint, Math.toRadians(45)).normalized();
-//		Vector2d topRightCorner = Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(1, topLeftToRightDirection).normalized(),topRightPoint), topRightPoint, Math.toRadians(45)).normalized();
-//		Vector2d bottomLeftCorner = Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(1, bottomRightToLeftDirection).normalized(),bottomLeftPoint), bottomLeftPoint, Math.toRadians(45)).normalized();
-//		Vector2d bottomRightCorner =Vector2d.rotatePointAroundAnotherPoint(Vector2d.add(Vector2d.mul(-1, bottomRightToLeftDirection).normalized(),bottomRightPoint), bottomRightPoint, Math.toRadians(45)).normalized();
-//		System.out.println("topleftdir"+topLeftCorner+", toprightdir"+topRightCorner+", bottomleftdir"+
-//		bottomLeftCorner+", bottomrightdir"+bottomRightCorner);
 		this.directionBottomLeft = bottomLeftCorner;
 		this.directionBottomRight = bottomRightCorner;
 		this.directionTopLeft = topLeftCorner;
@@ -507,6 +459,9 @@ public class Rectangle extends Shape {
 		
 	}
 
+	/**
+	 * calculates the {@link Vector2d} of each side and corner
+	 */
 	public void calculateCornersAndSides(){
 		topSide = new ArrayList<Vector2d>();
 		rightSide = new ArrayList<Vector2d>();
@@ -531,6 +486,7 @@ public class Rectangle extends Shape {
 		calculateNormalizedDirectionOfEachCorner();
 		
 	}
+	
 	@Override
 	public void moveReferencePoint(Vector2d deltaPosition) {
 		referencePoint = Vector2d.add(referencePoint, deltaPosition);
@@ -555,7 +511,7 @@ public class Rectangle extends Shape {
 	}
 
 	/**
-	 * sets the LengthOfSideA to newLengthOfSideA, sets the LengthOfSideB to
+	 * sets the {@link Rectangle#LengthOfSideA} to newLengthOfSideA, sets the {@link Rectangle#LengthOfSideB} to
 	 * newLengthOfSideB
 	 * 
 	 * @param newLengthOfSideA

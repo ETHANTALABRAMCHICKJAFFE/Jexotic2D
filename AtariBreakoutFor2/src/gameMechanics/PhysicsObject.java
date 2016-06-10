@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import math.Vector2d;
 
+/**
+ * @author Ethan
+ * This class contains all the neccessary Objects and parameters in order to react to physics.
+ */
 public class PhysicsObject implements Serializable{
 	/**
 	 * 
@@ -48,6 +52,7 @@ public class PhysicsObject implements Serializable{
 		this.velocity = velocity;
 	}
 	
+	@Deprecated
 	public void updateVelocity(PhysicsObject other){
 		// todo: momentum: m1*v1 + m2*v2 = m1*u1+m2*u2; m1*u1 = m1*v1 + m2*v2
 		double m1 = mass,m2 = other.mass;
@@ -84,6 +89,7 @@ public class PhysicsObject implements Serializable{
 		this.mass = mass;
 	}
 	
+	@Deprecated
 	/**
 	 * 
 	 * @param v1
@@ -107,6 +113,7 @@ public class PhysicsObject implements Serializable{
 		return vels;
 	}
 	
+	@Deprecated
 	public void findSecondVelocityOfCollisionWithAnotherSurface(Vector2d hitVelocity, Vector2d normalOfSurface){
 		if(!isMovable)
 			return;

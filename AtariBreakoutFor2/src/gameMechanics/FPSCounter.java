@@ -1,5 +1,9 @@
 package gameMechanics;
 
+/**
+ * @author Ethan
+ * a class that displays the FPS (Frames Per Second) of the game
+ */
 public class FPSCounter extends Thread{
     private long lastTime;
     private double fps; //could be int or long for integer values

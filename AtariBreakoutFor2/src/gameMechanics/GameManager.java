@@ -25,7 +25,7 @@ public class GameManager implements Runnable {
 			if (collidersInGame == null)
 				collidersInGame = new ArrayList<Collider>();
 			collidersInGame.add(c);
-			numOfCollidersInGame++;
+			numOfCollidersInGame++; 
 			collisions = new ArrayList<Collision>();
 		}
 	}
@@ -37,6 +37,10 @@ public class GameManager implements Runnable {
 		game = g;
 	}
 
+	
+	/** removes the collider with the received colliderID
+	 * @param colliderID
+	 */
 	public static void removeCollider(int colliderID) {
 		int i = 0;
 		for (Collider collider : collidersInGame) {
@@ -46,7 +50,8 @@ public class GameManager implements Runnable {
 			i++;
 		}
 	}
-
+	
+	@Deprecated
 	public static boolean areCollidersColliding(Collider c1, Collider c2){
 		for (Collision c : collisions) {
 			synchronized (collisions) {
@@ -59,6 +64,7 @@ public class GameManager implements Runnable {
 		return false;
 	}
 	
+	@Deprecated
 	public static void deleteCollision(Collider c1,Collider c2){
 		for (Collision c : collisions) {
 			synchronized (collisions) {
@@ -69,6 +75,12 @@ public class GameManager implements Runnable {
 			
 		}
 	}
+
+	/**
+	 * @param c1
+	 * @param c2
+	 * @return true if colliders c1 and c2 are colliding, else returns false.
+	 */
 	public static boolean collidersAreColliding(Collider c1, Collider c2) {
 		if (collidingColliders == null)
 			collidingColliders = new ArrayList<Collider>();
@@ -92,6 +104,11 @@ public class GameManager implements Runnable {
 		}
 	}
 
+	/**
+	 * @param c1 first {@link Collider}
+	 * @param c2 second {@link Collider}
+	 * @return the {@link Collider} with a {@link Shape} of type {@link Rectangle} connected {@link GameObject} 
+	 */
 	public static ArrayList<GameObject> getRectangleGameObjects(Collider c1, Collider c2) {
 		ArrayList<GameObject> rectGameObjects = new ArrayList<GameObject>();
 		if (c1.getColliderShape() instanceof Rectangle)
@@ -101,6 +118,11 @@ public class GameManager implements Runnable {
 		return rectGameObjects;
 	}
 
+	/**
+	 * @param c1 first {@link Collider}
+	 * @param c2 second {@link Collider}
+	 * @return the {@link Collider} with a {@link Shape} of type {@link Circle} connected {@link GameObject} 
+	 */
 	public static ArrayList<GameObject> getCircleGameObjects(Collider c1, Collider c2) {
 		ArrayList<GameObject> circleGameObjects = new ArrayList<GameObject>();
 		if (c1.getColliderShape() instanceof Circle)
@@ -110,6 +132,10 @@ public class GameManager implements Runnable {
 		return circleGameObjects;
 	}
 
+	/** detects and reacts to collision of two {@link Collider}s
+	 * @param c1 first {@link Collider}
+	 * @param c2 second {@link Collider}
+	 */
 	public static void detectCollision(Collider c1, Collider c2) {
 		// get two Colliders to check if they are colliding
 		Collider firstCollider = c1;
@@ -286,6 +312,10 @@ public class GameManager implements Runnable {
 		}
 	}
 	
+	/**
+	 * scans through the {@link GameManager#quad} of type {@link QuadTree} to determine
+	 * which {@link Collider}s are likely to collide, and then uses the method {@link GameManager#detectCollision(Collider, Collider)} on them
+	 */
 	public static void detectCollisions() {
 		if (collidersInGame == null || collidersInGame.isEmpty())
 			return;
@@ -326,6 +356,9 @@ public class GameManager implements Runnable {
 
 	}
 
+	/**
+	 * Resets all of the {@link GameManager}'s parameters.
+	 */
 	public static void reset() {
 		if (collidersInGame == null)
 			collidersInGame = new ArrayList<Collider>();

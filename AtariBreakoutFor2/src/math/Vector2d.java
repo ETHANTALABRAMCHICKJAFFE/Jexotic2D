@@ -6,6 +6,10 @@ import gameMechanics.Circle;
 import gameMechanics.Collider;
 import gameMechanics.Rectangle;
 
+/**  This is represents two values, x and y. it can be used for position, velocity etc.
+ * @author Ethan
+ *
+ */
 public class Vector2d implements Serializable{
 	/**
 	 * 

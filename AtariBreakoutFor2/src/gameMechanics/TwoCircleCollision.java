@@ -2,6 +2,7 @@ package gameMechanics;
 
 import math.Vector2d;
 
+@Deprecated
 public class TwoCircleCollision extends Collision{
 
 	public TwoCircleCollision(Collider c1, Collider c2) {

@@ -13,7 +13,7 @@ public class QuadTree {
 	  private Rectangle bounds;
 	  private QuadTree[] nodes;
 	 
-	 /*
+	 /**
 	  * Constructor
 	  */
 	  public QuadTree(int pLevel, Rectangle pBounds) {
@@ -23,7 +23,7 @@ public class QuadTree {
 	   nodes = new QuadTree[4];
 	  }
 	  
-	  /*
+	  /**
 	   * Clears the quadtree
 	   */
 	   public void clear() {
@@ -37,7 +37,7 @@ public class QuadTree {
 	     }
 	   }
 	   
-/*
+/**
  * Splits the node into 4 subnodes
  */
  private void split() {
@@ -52,7 +52,7 @@ public class QuadTree {
    nodes[3] = new QuadTree(level+1, new Rectangle(x + subWidth, y + subHeight, subWidth, subHeight));
  }
  
- /*
+ /**
   * Determine which node the object belongs to. -1 means
   * object cannot completely fit within a child node and is part
   * of the parent node
@@ -89,7 +89,7 @@ public class QuadTree {
     return index;
   }
   
-  /*
+  /**
    * Insert the object into the quadtree. If the node
    * exceeds the capacity, it will split and add all
    * objects to their corresponding nodes.
@@ -127,7 +127,7 @@ public class QuadTree {
    }
    
    
-   /*
+   /**
     * Return all objects that could collide with the given object
     */
     public List<Collider> retrieve(List<Collider> returnObjects, Collider c) {

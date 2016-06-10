@@ -8,8 +8,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+/**
+ * @author Ethan
+ * The class that handles keyboard Input within Scripts (i.e. those that extend {@link GameBehavior})
+ */
 public class Input {
 	private static ArrayList<Integer> currentKeyPressed, currentKeyReleased, currentKeyTyped;
+	
 	public Input() {
 		currentKeyPressed = new ArrayList<Integer>();
 		currentKeyReleased = new ArrayList<Integer>();
@@ -60,6 +65,11 @@ public class Input {
 	}
 
 
+	/**
+	 * @param keyCode
+	 * @return true if the keyCode corresponds with the currently pressed keyboard key, else 
+	 * returns false.
+	 */
 	public static boolean isKeyPressed(int keyCode) {
 		synchronized (Input.class) {
 			for (Integer i : currentKeyPressed) {
@@ -72,6 +82,11 @@ public class Input {
 		}
 	}
 	
+	/**
+	 @param keyCode
+	 * @return true if the keyCode corresponds with the currently released keyboard key, else 
+	 * returns false.
+	  */
 	public static boolean isKeyReleased(int keyCode) {
 		synchronized (Input.class) {
 			for (Integer i : currentKeyReleased) {

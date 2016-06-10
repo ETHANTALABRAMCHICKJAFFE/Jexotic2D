@@ -67,8 +67,20 @@ public interface GameBehavior extends Serializable {
 		GameManager.game.gameObjects.add(newG);
 		return newG;
 	}
+	/**
+	 * @param shape {@link Shape}
+	 * @param position {@link Vector2d}
+	 * @param velocity {@link Vector2d}
+	 * @param width double
+	 * @param height double
+	 * @param mass double 
+	 * @param color {@link Color}
+	 * @param isMovable boolean
+	 * @param isTrigger boolean
+	 * @param isDestroyed boolean
+	 * @return the new {@link GameObject} created according to the parameters that were given.
+	 */
 	public static GameObject createGameObject(String shape,Vector2d position,Vector2d velocity,double width,double height,double mass,Color color,boolean isMovable,boolean isTrigger,boolean isDestroyed){
-		
 		if(shape.equals("Circle")){
 		int id = GameManager.game.gameObjects.get(0).collider.getColliderID();
 		for (int i = 0; i <GameManager.game.gameObjects.size(); i++) {

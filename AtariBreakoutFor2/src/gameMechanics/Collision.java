@@ -4,6 +4,7 @@ import java.time.chrono.IsoChronology;
 
 import math.Vector2d;
 
+@Deprecated
 public class Collision {
 	Collider c1, c2;
 	Vector2d hit;
