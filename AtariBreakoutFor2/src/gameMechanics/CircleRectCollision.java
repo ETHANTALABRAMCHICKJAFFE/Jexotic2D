@@ -2,6 +2,7 @@ package gameMechanics;
 
 import math.Vector2d;
 
+@Deprecated
 public class CircleRectCollision extends Collision{
 
 	boolean isCornerCollision = false;

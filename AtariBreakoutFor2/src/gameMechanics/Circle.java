@@ -27,7 +27,6 @@ public class Circle extends Shape{
 	
 	@Override
 	public void rotate(double angle) {
-	//	super.rotate(angle);
 	}
 	
 	@Override

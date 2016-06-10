@@ -61,6 +61,7 @@ public class Collider implements Serializable {
 
 	}
 
+	@Deprecated
 	public ArrayList<Vector2d> convertAllPointsToJavaGraphics(ArrayList<Vector2d> points) {
 		ArrayList<Vector2d> newPoints = new ArrayList<Vector2d>();
 		for (Vector2d point : points) {
@@ -140,7 +141,11 @@ public class Collider implements Serializable {
 		return null;
 	}
 
-	// checkRectSideCircleCollided
+	/**
+	 * @param r the Rectangle
+	 * @param c the Circle
+	 * @return the Vector2d representing the side of the Rect that the Circle is on
+	 */
 	public static Vector2d checkWhichSideOfRectCircleIsOn(Rectangle r, Circle c) {
 
 		double disCircleRect = Vector2d.findDistanceBetweenTwoVector2ds(c.getReferencePoint(), r.referencePoint);
@@ -217,32 +222,12 @@ public class Collider implements Serializable {
 		return null;
 	}
 
-	/*
-		*//**
-			 * checks which side of the rectangle the circle is touching
-			 * 
-			 * @param r
-			 *            the rectangle
-			 * @param c
-			 *            the circle
-			 * @return the side of the rectangle that the circle touched
-			 *//*
-			 * public static Vector2d checkWhichSideOfRectCircleIsOn(Rectangle
-			 * r, Circle c) { double w = 0.5 * (r.getLengthOfSideB() +
-			 * c.getRadius() * 2); double h = 0.5 * (r.getLengthOfSideA() +
-			 * c.getRadius() * 2); double dx = r.getReferencePoint().getX() -
-			 * c.getReferencePoint().getX(); double dy =
-			 * r.getReferencePoint().getY() - c.getReferencePoint().getY();
-			 * 
-			 * if (Math.abs(dx) <= w && Math.abs(dy) <= h) { collision! double
-			 * wy = w * dy; double hx = h * dx;
-			 * 
-			 * if (wy > hx) if (wy > -hx) { collision at the top return
-			 * r.topSideVector; } else { on the left return r.leftSideVector; }
-			 * else if (wy > -hx) { on the right return r.rightSideVector; }
-			 * else { at the bottom return r.bottomSideVector; } } return null;
-			 * }
-			 */
+	/**
+	 * @param r the Rectangle
+	 * @param s the Shape
+	 * @return the Vector2d point representing the corner of the Rectangle
+	 * that the Shape is near
+	 */
 	public static Vector2d checksNearWhichCornerOfRect(Rectangle r, Shape s) {
 		double disTopLeft = Vector2d.findDistanceBetweenTwoVector2ds(r.topLeftPoint, s.getReferencePoint());
 		double disTopRight = Vector2d.findDistanceBetweenTwoVector2ds(r.topRightPoint, s.getReferencePoint());
@@ -267,6 +252,11 @@ public class Collider implements Serializable {
 		return null;
 	}
 
+	/**
+	 * @param r the Rectangle
+	 * @param collisionRadius the radius within collision can happen
+	 * @return true if it is within the radius, else returns false.
+	 */
 	public boolean checkIfRectangleIsWithinCollisionRadius(Rectangle r, double collisionRadius) {
 		ArrayList<Vector2d> topSide = new ArrayList<Vector2d>();
 		ArrayList<Vector2d> bottomSide = new ArrayList<Vector2d>();
@@ -309,6 +299,11 @@ public class Collider implements Serializable {
 		return false;
 	}
 
+	/**
+	 * @param c The Circle
+	 * @param collisionRadius the radius within collision can happen
+	 * @return true if it is within the radius, else returns false.
+	 */
 	public boolean checkIfCircleIsWithinCollisionRadius(Circle c, double collisionRadius) {
 		if (Vector2d.findDistanceBetweenTwoVector2ds(c.referencePoint,
 				this.getColliderShape().referencePoint) <= collisionRadius)
@@ -319,6 +314,11 @@ public class Collider implements Serializable {
 		return false;
 	}
 
+	/**
+	 * @param other the Collider
+	 * @param collisionRadius the radius within collision can happen
+	 * @return true if it is within the radius, else returns false.
+	 */
 	public boolean checkIfColliderIsWithInCollisionRadius(Collider other, double collisionRadius) {
 		if (other.getColliderShape() instanceof Rectangle)
 			if (!checkIfRectangleIsWithinCollisionRadius((Rectangle) other.getColliderShape(), collisionRadius))
@@ -329,6 +329,13 @@ public class Collider implements Serializable {
 		return true;
 	}
 
+	/**
+	 * @param r the Rectangle 
+	 * @param c the Circle
+	 * @return if circle is colliding with the Rectangle corner, it return the 
+	 * Vector2d direction of the corner. This will help determine the new velocity of 
+	 * the GameObject that is connected to the Collider Shape
+	 */
 	public static Vector2d returnsTheCollidingCornerVectorDirection(Rectangle r, Circle c) {
 		// CORNER COLLISION Ethan
 		double error = 10; // 10
@@ -349,6 +356,7 @@ public class Collider implements Serializable {
 		}
 	}
 
+	@Deprecated
 	public static void calculateCornerPositionCorrection(Collider c1, Collider c2) {
 		if (c1.getColliderShape() instanceof Circle && c2.getColliderShape() instanceof Rectangle) {
 			Circle c = (Circle) c1.getColliderShape();
@@ -365,6 +373,11 @@ public class Collider implements Serializable {
 		}
 	}
 
+	/**
+	 * @param circle the Circle Shape
+	 * @param rectangle the Rectangle Shape
+	 * @return The colliding corner Vector2d direction
+	 */
 	public static Vector2d detectCornerCollision(Collider circle, Collider rectangle) {
 		Vector2d hit = null;
 		Circle c = (Circle) circle.getColliderShape();
@@ -374,6 +387,12 @@ public class Collider implements Serializable {
 		return hit;
 	}
 
+	/**
+	 * @param c1 the First Collider
+	 * @param c2 the Second Collider
+	 * @param tempFirstVelocity c1's velocity
+	 * @param tempSecondVelocity c2's velocity
+	 */
 	public static void calculateCollisionOfTwoCircles(Collider c1, Collider c2, Vector2d tempFirstVelocity,
 			Vector2d tempSecondVelocity) {
 
@@ -408,6 +427,14 @@ public class Collider implements Serializable {
 			secondCircle.setVelocity(tempFirstVelocity);
 	}
 
+	/**
+	 * @param r {@link Rectangle}
+	 * @param c {@link Circle}
+	 * @param movevec the subtracted {@link Vector2d} of both GameObjects
+	 * @param circle The circle shaped {@link GameObject}
+	 * @param rect the Rectangle shaped {@link GameObject}
+	 * @return true if they are going to collide, else false.
+	 */
 	public static boolean areCircleAndRectangleGoingToCollide(Rectangle r, Circle c, Vector2d movevec, GameObject circle, GameObject rect) {
 		return areCircleAndLineGoingToCollide(r.topSide, c, movevec, circle, rect)
 				|| areCircleAndLineGoingToCollide(r.leftSide, c, movevec, circle, rect)
@@ -415,6 +442,12 @@ public class Collider implements Serializable {
 				|| areCircleAndLineGoingToCollide(r.rightSide, c, movevec, circle, rect);
 	}
 
+	/**
+	 * @param A the {@link Circle}
+	 * @param cornerPoint The {@link Vector2d} cornerPoint
+	 * @param movevec the subtracted {@link Vector2d} of both GameObjects
+	 * @return true if A and cornerPoint are going to collide, else returns false.
+	 */
 	public static boolean areCircleAndCornerGoingToCollide(Circle A, Vector2d cornerPoint, Vector2d movevec) {
 
 		// Early Escape test: if the length of the movevec is less
@@ -494,6 +527,14 @@ public class Collider implements Serializable {
 
 	}
 
+	/**
+	 * @param line the ArrayList<{@link Vector2d}> consisting of at least two points 
+	 * @param c The {@link Circle} {@link Shape} of the {@link Collider}
+	 * @param movevec the subtracted {@link Vector2d} of both GameObjects
+	 * @param circle the {@link Circle} {@link Shape}d {@link GameObject}
+	 * @param rect the {@link Rectangle} {@link Shape}d {@link GameObject}
+	 * @return
+	 */
 	public static boolean areCircleAndLineGoingToCollide(ArrayList<Vector2d> line, Circle c, Vector2d movevec, GameObject circle, GameObject rect) {
 		double originalMovevecLength = movevec.length();
 		
@@ -602,10 +643,10 @@ public class Collider implements Serializable {
 
 	/**
 	 * 
-	 * @param A
-	 * @param B
-	 * @param movevec
-	 * @return returns vector2d.zero() if it is a corner;
+	 * @param A the first {@link Circle}
+	 * @param B the second {@link Circle}
+	 * @param  movevec the subtracted {@link Vector2d} of both GameObjects
+	 * @return returns true if they are going to collide, else returns false
 	 */
 	public static boolean areCirclesGoingToCollide(Circle A, Circle B, Vector2d movevec, GameObject a, GameObject b) {
 
@@ -701,9 +742,7 @@ public class Collider implements Serializable {
 	}
 
 	/**
-	 * this method draws the collider onto the screen as long as drawCollider ==
-	 * true
-	 * 
+	 * this method draws the collider onto the screen as long as {@link Collider#drawCollider} is true
 	 * @param g
 	 */
 	public void drawCollider(Graphics g) {
@@ -755,6 +794,9 @@ public class Collider implements Serializable {
 		}
 	}
 
+	/** moves the {@link Collider}
+	 * @param velocity the {@link Vector2d} to move per frame 
+	 */
 	public void updatePosition(Vector2d velocity) {
 		if (getColliderShape() instanceof Circle) {
 			((Circle) getColliderShape()).moveReferencePoint(velocity);
@@ -765,6 +807,9 @@ public class Collider implements Serializable {
 		}
 	}
 
+	/** moves the {@link Collider} to a new position
+	 * @param position the new {@link Vector2d} position
+	 */
 	public void moveToPosition(Vector2d position) {
 		if (getColliderShape() instanceof Circle) {
 			position = Vector2d.sub(position, collider.referencePoint);
