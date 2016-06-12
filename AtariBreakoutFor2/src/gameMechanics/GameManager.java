@@ -230,6 +230,7 @@ public class GameManager implements Runnable {
 				if (!circleGameObject1.getIsDestroyed() && !rectangleGameObject1.getIsDestroyed()) {
 					if (!circleGameObject1.isTrigger() && !rectangleGameObject1.isTrigger()) {
 						if (GameManager.realisticCollisions) {
+							System.out.println("real");
 							double mass1 = circleGameObject1.mass;
 							double mass2 = rectangleGameObject1.mass;
 							double newVelX1 = (v1.getX()

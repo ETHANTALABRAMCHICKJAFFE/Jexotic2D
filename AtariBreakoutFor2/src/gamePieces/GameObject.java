@@ -103,6 +103,9 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	 * @param scriptPath the location path of the script.
 	 */
 	public void addScript(GameBehavior script,String scriptPath){
+		if (scripts == null) {
+			scripts = new ArrayList<GameBehavior>();
+		}
 		scripts.add(script);
 		scriptsPaths.add(scriptPath);
 	}
@@ -430,5 +433,9 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		for(GameBehavior b : scripts){
 			b.start(g);
 		}
+	}
+	
+	public ArrayList<GameBehavior> getScripts(){
+		return scripts;
 	}
 }

@@ -12,9 +12,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,8 +40,10 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 	rotationLabel;
 	JTextField xPosition,yPosition,nameLabel,widthField,heightField,xVelocityField,yVelocityField,massField,
 	rotationField;
+	ArrayList<JLabel> scripts;
 	MainEditor gamePanel;
 	JCheckBox isMovable,isTrigger,isDestroyed,destroyOnCollision;
+	JComboBox<String> addScriptButton;
 	boolean hide = true;
 	
 	public Inspector(MainEditor e){
@@ -134,6 +139,29 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		rotationField.setActionCommand("rotation");
 		rotationField.addActionListener(this);
 		
+		addScriptButton = new JComboBox<String>();
+		addScriptButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (addScriptButton.getSelectedItem() != null) {
+
+					String scriptName = addScriptButton.getSelectedItem().toString();
+					for (int j = 0; gameObject.getScripts() != null && gameObject.getScripts().size() > 0 && j < gameObject.getScripts().size(); j++) {
+						String scriptString = gameObject.getScripts().get(j).getClass().getName();
+						System.out.println(scriptString);
+						scriptString = scriptString.substring(8);
+						//scriptString = scriptString.substring(0, scriptString.indexOf(".java"));
+						System.out.println(scriptString);
+						if(scriptString.equals(scriptName))
+							return;	
+					}
+					System.out.println("add");
+					gameObject.addScriptFile(addScriptButton.getSelectedItem().toString());
+					updateValues(gameObject);
+				}
+			}
+		});
 		isMovable = new JCheckBox("Is Movable");
 		isMovable.addItemListener(new ItemListener() {
 			
@@ -298,6 +326,17 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		c.weightx = 1;
 		c.weighty = 0;
 		this.add(yVelocityField, c);
+
+		System.out.println("scriptssize"+scripts.size());
+		for (int i = 0; scripts != null && scripts.size() > 0 && i < scripts.size(); i++) {
+			y+=3;
+			c.gridx = 0;
+			c.gridy = y;
+			c.weightx = 1;
+			c.weighty = 0;
+			this.add(scripts.get(i),c);
+			
+		}
 		y++;
 		c.gridx = 0;
 		c.gridy = y;
@@ -334,7 +373,27 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		c.weightx = 1;
 		c.weighty = 1;
 		this.add(destroyOnCollision, c);
-		
+		y++;
+
+		c.gridx = 0;
+		c.gridy = y;
+		c.weightx = 1;
+		c.weighty = 1;
+		//addScriptButton.removeAllItems();
+		File root = new File(ProjectManager.projectDirectory);
+		File sourceFile = new File(root, "\\Scripts\\");
+		File[] scriptList = sourceFile.listFiles(new FileFilter() {
+			
+			@Override
+			public boolean accept(File pathname) {
+				// TODO Auto-generated method stub
+				return pathname.getName().endsWith(".java");
+			}
+		});
+		for (int j = 0; scriptList != null && scriptList.length > 0 && j < scriptList.length; j++) {
+			addScriptButton.addItem(scriptList[j].getName().substring(0, scriptList[j].getName().indexOf(".java")));	
+		}
+		this.add(addScriptButton, c);
 		revalidate();
 		repaint();
 	}
@@ -367,6 +426,13 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		this.remove(destroyOnCollision);
 		this.remove(rotationField);
 		this.remove(rotationLabel);
+		for (int i = 0; scripts != null && scripts.size() > 0 && i < scripts.size(); i++) {
+			this.remove(scripts.get(i));
+			//scripts.remove(i);
+		}
+		
+		this.remove(addScriptButton);
+		addScriptButton.removeAll();
 		revalidate();
 		repaint();
 	}
@@ -391,7 +457,7 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		x = Math.floor(x * 100) / 100;
 		double y = g.getPosition().getY();
 		y = Math.floor(y * 100) / 100;
-		addComponents();
+				
 		xPosition.setText(x+"");
 		yPosition.setText(y+"");
 		nameLabel.setText(g.getName());
@@ -413,6 +479,26 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		double rotAng = g.getCollider().getColliderShape().getRotationAngle();
 		rotAng = Math.floor(rotAng * 100) / 100;
 		rotationField.setText(rotAng+"");
+		
+		scripts = new ArrayList<JLabel>();
+		if(gameObject != null && gameObject.getScripts() != null)
+		System.out.println("scriptssize1"+gameObject.getScripts().size());
+		for (int i = 0;gameObject.getScripts() != null && gameObject.getScripts().size() > 0 &&  i < gameObject.getScripts().size(); i++) {
+			JLabel scriptLabel = new JLabel(gameObject.getScripts().get(i).getClass().getName().substring(8));
+			scriptLabel.setForeground(Color.white);
+			scriptLabel.setFont(new Font(scriptLabel.getName(),Font.PLAIN,20));
+			boolean contains = false;
+			for (int j = 0; j < scripts.size(); j++) {
+				if(scripts.get(j).getText() == scriptLabel.getText()){
+					contains = true;
+			}
+			
+			}
+			if(!contains)
+			scripts.add(scriptLabel);
+		}
+		//removeComponents();
+		addComponents();
 		repaint();
 	}
 
