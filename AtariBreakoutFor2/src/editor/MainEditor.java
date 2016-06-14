@@ -351,7 +351,7 @@ public class MainEditor extends JPanel implements ActionListener, MouseListener,
 		GameObject rectangle = new GameObject(position, vel, 1, Color.red, c);
 		rectangle.setName("GameObject" + numOfGameObjects);
 		rectangle.setMovable(false);
-		rectangle.addScriptFile("DemoScript1");
+		//rectangle.addScriptFile("DemoScript1");
 		gameObjects.add(rectangle);
 		numOfGameObjects++;
 		inspector.setGameObject(rectangle);

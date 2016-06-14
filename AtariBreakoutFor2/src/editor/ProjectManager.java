@@ -35,9 +35,9 @@ import javax.swing.event.ListSelectionListener;
 import gamePieces.GameObject;
 
 /**
- * @author Ethan
- * The ProjectManager is the class that opens a window that allows you to create and open new/existing
- * projects, load their information and open the MainEditor.
+ * @author Ethan The ProjectManager is the class that opens a window that allows
+ *         you to create and open new/existing projects, load their information
+ *         and open the MainEditor.
  */
 public class ProjectManager {
 
@@ -48,7 +48,6 @@ public class ProjectManager {
 	JScrollPane objectList;
 	JFrame f;
 	JButton createProject, openProject;
-
 
 	public ProjectManager() {
 
@@ -96,10 +95,12 @@ public class ProjectManager {
 		// buttonsList.setDragEnabled(true);
 		// buttonsList.setDropMode(DropMode.INSERT);
 		f = new JFrame("Select Project");
-		//]f.setIconImage(new ImageIcon(getClass().getResource("Jexotic2D/Images/JexoticIcon1.png")).getImage());
+		// ]f.setIconImage(new
+		// ImageIcon(getClass().getResource("Jexotic2D/Images/JexoticIcon1.png")).getImage());
 		Image icon = Toolkit.getDefaultToolkit().getImage("Images/JexoticIcon1.png");
-	    f.setIconImage(icon);
-		//f.setIconImage((new ImageIcon("Jexotic2D/Images/JexoticIcon1.png")).getImage());
+		f.setIconImage(icon);
+		// f.setIconImage((new
+		// ImageIcon("Jexotic2D/Images/JexoticIcon1.png")).getImage());
 		f.setBounds(250, 100, 1200, 800);
 		JPanel p = new JPanel();
 
@@ -124,7 +125,7 @@ public class ProjectManager {
 
 			}
 		});
-		//p.add(createProject, BorderLayout.NORTH);
+		// p.add(createProject, BorderLayout.NORTH);
 		p.add(openProject, BorderLayout.SOUTH);
 		f.add(p);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -132,7 +133,6 @@ public class ProjectManager {
 		// createProject("Demo1");
 	}
 
-	
 	/**
 	 * Finds all the projects that are within the C:\\Jexotic2D Projects folder.
 	 */
@@ -149,13 +149,15 @@ public class ProjectManager {
 
 	/**
 	 * saves the project's current state and GameObject ArrayList.
-	 * @param m the MainEditor
+	 * 
+	 * @param m
+	 *            the MainEditor
 	 */
 	public static void saveProject(MainEditor m) {
 
 		ObjectOutputStream out;
 		try {
-			out = new ObjectOutputStream(new FileOutputStream(projectDirectory+"\\game_objects.ser"));
+			out = new ObjectOutputStream(new FileOutputStream(projectDirectory + "\\game_objects.ser"));
 			out.writeObject(m.gameObjects);
 			out.flush();
 			out.close();
@@ -172,6 +174,7 @@ public class ProjectManager {
 
 	/**
 	 * Loads the GameObject list of existing project saved in the file system.
+	 * 
 	 * @param dir
 	 */
 	public static void loadProject(String dir) {
@@ -181,10 +184,10 @@ public class ProjectManager {
 			if (Files.exists(path)) {
 
 				ObjectInputStream in = new ObjectInputStream(new FileInputStream(dir + "\\game_objects.ser"));
-				//if(in.readObject() instanceof ArrayList)
+				// if(in.readObject() instanceof ArrayList)
 				Object b = in.readObject();
-				if(b instanceof ArrayList)
-					g = (ArrayList<GameObject>)b; 
+				if (b instanceof ArrayList)
+					g = (ArrayList<GameObject>) b;
 				in.close();
 			}
 		} catch (IOException e) {
@@ -197,19 +200,26 @@ public class ProjectManager {
 		projectDirectory = dir;
 		MainEditor editor = new MainEditor();
 		editor.createGUI();
-		if(g != null ){
-		for (GameObject gameObject : g) {
-			editor.outliner.addGameObject(gameObject);
-			editor.outliner.createButtons();
-			editor.outliner.updateSelected(gameObject);
-		}
+		if (g != null) {
+			for (GameObject gameObject : g) {
+				if (gameObject.getScriptPaths() != null && gameObject.getScriptPaths().size() > 0) {
+					ArrayList<String> scripts = new ArrayList<String>(gameObject.getScriptPaths());
+					gameObject.getScriptPaths().clear();
+					for (int i = 0; i < scripts.size(); i++) {
+						gameObject.addScriptFile(scripts.get(i));
+					}
+				}
+
+				editor.outliner.addGameObject(gameObject);
+				editor.outliner.createButtons();
+				editor.outliner.updateSelected(gameObject);
+			}
 			editor.gameObjects = g;
 		}
 	}
 
-	
 	/**
-	 * Creates the projects folder. 
+	 * Creates the projects folder.
 	 */
 	public static void createProjectsFolder() {
 		Path projectsFolder = Paths.get("C:\\Jexotic2D Projects");
@@ -225,7 +235,9 @@ public class ProjectManager {
 
 	/**
 	 * Creates a new Project.
-	 * @param name the name of the new project.
+	 * 
+	 * @param name
+	 *            the name of the new project.
 	 */
 	public static void createProject(String name) {
 

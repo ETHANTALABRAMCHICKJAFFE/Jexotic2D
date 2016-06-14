@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -43,7 +44,8 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 	ArrayList<JLabel> scripts;
 	MainEditor gamePanel;
 	JCheckBox isMovable,isTrigger,isDestroyed,destroyOnCollision;
-	JComboBox<String> addScriptButton;
+	JComboBox<String> chooseScriptBox;
+	JButton addScriptButton;
 	boolean hide = true;
 	
 	public Inspector(MainEditor e){
@@ -138,15 +140,15 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		rotationField.setHorizontalAlignment(SwingConstants.LEFT);
 		rotationField.setActionCommand("rotation");
 		rotationField.addActionListener(this);
-		
-		addScriptButton = new JComboBox<String>();
+	
+		addScriptButton = new JButton("ADD SELECTED");
 		addScriptButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (addScriptButton.getSelectedItem() != null) {
+				if (chooseScriptBox.getSelectedItem() != null) {
 
-					String scriptName = addScriptButton.getSelectedItem().toString();
+					String scriptName = chooseScriptBox.getSelectedItem().toString();
 					for (int j = 0; gameObject.getScripts() != null && gameObject.getScripts().size() > 0 && j < gameObject.getScripts().size(); j++) {
 						String scriptString = gameObject.getScripts().get(j).getClass().getName();
 						System.out.println(scriptString);
@@ -157,12 +159,36 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 							return;	
 					}
 					System.out.println("add");
-					gameObject.addScriptFile(addScriptButton.getSelectedItem().toString());
+					gameObject.addScriptFile(chooseScriptBox.getSelectedItem().toString());
 					updateValues(gameObject);
 				}
 			}
 		});
-		isMovable = new JCheckBox("Is Movable");
+		chooseScriptBox = new JComboBox<String>();
+		chooseScriptBox.setSelectedItem(null);
+		/*chooseScriptBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (chooseScriptBox.getSelectedItem() != null) {
+
+					String scriptName = chooseScriptBox.getSelectedItem().toString();
+					for (int j = 0; gameObject.getScripts() != null && gameObject.getScripts().size() > 0 && j < gameObject.getScripts().size(); j++) {
+						String scriptString = gameObject.getScripts().get(j).getClass().getName();
+						System.out.println(scriptString);
+						scriptString = scriptString.substring(8);
+						//scriptString = scriptString.substring(0, scriptString.indexOf(".java"));
+						System.out.println(scriptString);
+						if(scriptString.equals(scriptName))
+							return;	
+					}
+					System.out.println("add");
+					gameObject.addScriptFile(chooseScriptBox.getSelectedItem().toString());
+					updateValues(gameObject);
+				}
+			}
+		});
+*/		isMovable = new JCheckBox("Is Movable");
 		isMovable.addItemListener(new ItemListener() {
 			
 			@Override
@@ -327,6 +353,7 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		c.weighty = 0;
 		this.add(yVelocityField, c);
 
+		
 		System.out.println("scriptssize"+scripts.size());
 		for (int i = 0; scripts != null && scripts.size() > 0 && i < scripts.size(); i++) {
 			y+=3;
@@ -374,7 +401,6 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		c.weighty = 1;
 		this.add(destroyOnCollision, c);
 		y++;
-
 		c.gridx = 0;
 		c.gridy = y;
 		c.weightx = 1;
@@ -390,9 +416,15 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 				return pathname.getName().endsWith(".java");
 			}
 		});
+		chooseScriptBox.removeAllItems();
 		for (int j = 0; scriptList != null && scriptList.length > 0 && j < scriptList.length; j++) {
-			addScriptButton.addItem(scriptList[j].getName().substring(0, scriptList[j].getName().indexOf(".java")));	
+			chooseScriptBox.addItem(scriptList[j].getName().substring(0, scriptList[j].getName().indexOf(".java")));	
 		}
+		this.add(chooseScriptBox, c);
+		c.gridx = 1;
+		c.gridy = y;
+		c.weightx = 1;
+		c.weighty = 1;
 		this.add(addScriptButton, c);
 		revalidate();
 		repaint();
@@ -402,37 +434,42 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 	 * removes all the components that display the information on the selected GameObject. 
 	 */
 	public void removeComponents(){
-		this.remove(nameLabel);
-		this.remove(positionLabel);
-		this.remove(xPositionLabel);
-		this.remove(yPositionLabel);
-		this.remove(xPosition);
-		this.remove(yPosition);
-		this.remove(scaleLabel);
-		this.remove(widthField);
-		this.remove(heightField);
-		this.remove(widthLabel);
-		this.remove(heightLabel);
-		this.remove(velocityLabel);
-		this.remove(xVelocityLabel);
-		this.remove(yVelocityLabel);
-		this.remove(xVelocityField);
-		this.remove(yVelocityField);
-		this.remove(massField);
-		this.remove(massLabel);
-		this.remove(isMovable);
-		this.remove(isTrigger);
-		this.remove(isDestroyed);
-		this.remove(destroyOnCollision);
-		this.remove(rotationField);
-		this.remove(rotationLabel);
-		for (int i = 0; scripts != null && scripts.size() > 0 && i < scripts.size(); i++) {
-			this.remove(scripts.get(i));
-			//scripts.remove(i);
-		}
-		
-		this.remove(addScriptButton);
-		addScriptButton.removeAll();
+//		this.remove(nameLabel);
+//		this.remove(positionLabel);
+//		this.remove(xPositionLabel);
+//		this.remove(yPositionLabel);
+//		this.remove(xPosition);
+//		this.remove(yPosition);
+//		this.remove(scaleLabel);
+//		this.remove(widthField);
+//		this.remove(heightField);
+//		this.remove(widthLabel);
+//		this.remove(heightLabel);
+//		this.remove(velocityLabel);
+//		this.remove(xVelocityLabel);
+//		this.remove(yVelocityLabel);
+//		this.remove(xVelocityField);
+//		this.remove(yVelocityField);
+//		this.remove(massField);
+//		this.remove(massLabel);
+//		this.remove(isMovable);
+//		this.remove(isTrigger);
+//		this.remove(isDestroyed);
+//		this.remove(destroyOnCollision);
+//		this.remove(rotationField);
+//		this.remove(rotationLabel);
+//		for (int i = 0; scripts != null && scripts.size() > 0 && i < scripts.size(); i++) {
+//			this.remove(scripts.get(i));
+//			System.out.println("scripts.size="+scripts.size());
+//		//	scripts.remove(i);
+//		}
+		scripts.clear();
+		//this.remove(chooseScriptBox);
+		chooseScriptBox.removeAll();
+		//this.remove(addScriptButton);
+//		if(this.getComponentCount() == 2)
+//		System.out.println("comps= "+this.getComponents()[0]+","+this.getComponents()[1]);
+		this.removeAll();
 		revalidate();
 		repaint();
 	}
@@ -479,22 +516,23 @@ public class Inspector extends JPanel implements KeyListener, ActionListener{
 		double rotAng = g.getCollider().getColliderShape().getRotationAngle();
 		rotAng = Math.floor(rotAng * 100) / 100;
 		rotationField.setText(rotAng+"");
-		
+		if(scripts == null)
 		scripts = new ArrayList<JLabel>();
+		scripts.clear();
 		if(gameObject != null && gameObject.getScripts() != null)
-		System.out.println("scriptssize1"+gameObject.getScripts().size());
+		System.out.println("gameObjectScript"+gameObject.getScripts().size());
 		for (int i = 0;gameObject.getScripts() != null && gameObject.getScripts().size() > 0 &&  i < gameObject.getScripts().size(); i++) {
 			JLabel scriptLabel = new JLabel(gameObject.getScripts().get(i).getClass().getName().substring(8));
 			scriptLabel.setForeground(Color.white);
 			scriptLabel.setFont(new Font(scriptLabel.getName(),Font.PLAIN,20));
-			boolean contains = false;
+			/*boolean contains = false;
 			for (int j = 0; j < scripts.size(); j++) {
 				if(scripts.get(j).getText() == scriptLabel.getText()){
 					contains = true;
 			}
 			
 			}
-			if(!contains)
+			if(!contains)*/
 			scripts.add(scriptLabel);
 		}
 		//removeComponents();

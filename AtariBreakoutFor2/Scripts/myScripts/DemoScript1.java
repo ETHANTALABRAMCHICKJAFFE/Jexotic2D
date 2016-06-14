@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import math.*;
 import java.lang.Math;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 public class DemoScript1 implements GameBehavior{
 		public static int score = 0;
 		double angle = 0;
+		ArrayList<GameObject>;
 			@Override
 			public void update(GameObject g) {
 				// TODO Auto-generated method stub
@@ -31,7 +33,6 @@ public class DemoScript1 implements GameBehavior{
 					g.setVelocity(new Vector2d(0,0));
 					
 				}
-				
 				g.rotate(g.getCollider().getColliderShape().getRotationAngle()+angle);
 				angle++;
 			}

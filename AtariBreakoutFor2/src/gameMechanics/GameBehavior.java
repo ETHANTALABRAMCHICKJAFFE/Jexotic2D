@@ -103,17 +103,25 @@ public interface GameBehavior extends Serializable {
 			GameManager.game.gameObjects.add(new GameObject(Circle));		
 		}
 		//GameManager.game.gameObjects.listIterator().add(Circle);
+//		synchronized (GameManager.collidersInGame) {
+//			GameManager.addCollider(c);
+//		}
 		return Circle;
 		}
 		else if(shape.equals("Rectangle")){
-			int id = GameManager.game.gameObjects.get(0).collider.getColliderID();
+			int id;
+			if(GameManager.game.gameObjects.size() > 0){
+			id = GameManager.game.gameObjects.get(0).collider.getColliderID();
 			for (int i = 0; i <GameManager.game.gameObjects.size(); i++) {
 				synchronized (GameManager.game.gameObjects) {
 					id = Math.max(id,GameManager.game.gameObjects.get(i).collider.getColliderID());	
 				}
 			}
 			id++;
-			// collider is added  to GameManager within collider constructor
+			}else{
+				id = 0;
+			}
+			// collider is added  to GameManager within GameObject constructor
 			Collider c = new Collider(new Rectangle(position,height,width,0),id);
 			Vector2d vel = new Vector2d(velocity);
 			GameObject rectangle = new GameObject(position, vel , mass, color, c);
@@ -122,9 +130,13 @@ public interface GameBehavior extends Serializable {
 			rectangle.getCollider().setDrawCollider(false);
 			rectangle.setTrigger(isTrigger);
 			rectangle.setIsDestroyed(isDestroyed);
+			c.setDrawCollider(true);
 			synchronized (GameManager.game.gameObjects) {
 				GameManager.game.gameObjects.add(new GameObject(rectangle));		
 			}
+//			synchronized (GameManager.collidersInGame) {
+//				GameManager.addCollider(c);
+//			}
 			return rectangle;
 		}
 		else{

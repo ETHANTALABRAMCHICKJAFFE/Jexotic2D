@@ -9,6 +9,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
@@ -80,19 +81,32 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 		setTrigger(g.isTrigger());
 		scripts = new ArrayList<GameBehavior>();
 		scriptsPaths = new ArrayList<String>();
-		if(g.scripts != null && !g.scripts.isEmpty())
-			scripts.addAll(g.scripts);
-		if(g.scriptsPaths != null && !g.scriptsPaths.isEmpty())
-			scriptsPaths.addAll(g.scriptsPaths);
-		if(!scriptsPaths.isEmpty()){
-			
-			synchronized (scriptsPaths) {
-				for (String path : scriptsPaths) {
-					addScriptFromFile(path);	
-				}
+//		if(g.scripts != null && !g.scripts.isEmpty())
+//			scripts.addAll(g.scripts);
+//		if(g.scriptsPaths != null && !g.scriptsPaths.isEmpty())
+//			scriptsPaths.addAll(g.scriptsPaths);
+//		if(!scriptsPaths.isEmpty()){
+//			
+//			synchronized (scriptsPaths) {
+//				for (String path : scriptsPaths) {
+//					//addScriptFile(path);
+//					addScriptFromFile(path);	
+//				}
+//			}
+//			
+//			
+//		}
+		
+		if(g.scripts != null && !g.scripts.isEmpty()){
+			synchronized (g.scripts) {
+				for (int i = 0; i < g.scripts.size(); i++) {
+					String scriptName = g.scripts.get(i).getClass().getName();
+					System.out.println("scriptName: "+scriptName);
+					scriptName = scriptName.substring(8);
+					addScriptFile(scriptName);
+				}		
 			}
-			
-			
+		
 		}
 		awake(this);
 	}
@@ -119,6 +133,7 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 			// Save source in .java file.
 			File root = new File(ProjectManager.projectDirectory); // On Windows running on C:\, this is C:\java.
 			File sourceFile = new File(root,"\\Scripts\\"+scriptName+".java");
+			
 			System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_60");
 			
 			// Compile source file.
@@ -157,9 +172,22 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 			File root = new File(ProjectManager.projectDirectory);
 			File sourceFile = new File(root, "\\Scripts\\"+scriptname+".java");
 			sourceFile.getParentFile().mkdirs();
-			
-			System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_60");
-			
+			File jdkFile = new File("C:\\Program Files\\Java");
+			if(jdkFile.isDirectory()){
+				String[] files =
+						jdkFile.list(new FilenameFilter() {
+							
+							@Override
+							public boolean accept(File arg0, String arg1) {
+								// TODO Auto-generated method stub
+								
+								return arg1.startsWith("jdk");
+							}
+						});
+				jdkFile = new File(jdkFile,files[0]);
+			}
+			//System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_60");
+			System.setProperty("java.home", jdkFile.getAbsolutePath());
 			// Compile source file.
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			System.out.println(sourceFile.getPath());
@@ -437,5 +465,8 @@ public class GameObject extends PhysicsObject implements GameBehavior,Serializab
 	
 	public ArrayList<GameBehavior> getScripts(){
 		return scripts;
+	}
+	public ArrayList<String> getScriptPaths(){
+		return scriptsPaths;
 	}
 }
